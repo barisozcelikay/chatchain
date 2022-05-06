@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'package:chatchain/constants.dart';
 import 'package:flutter/material.dart';
 
 class ChatHomePage extends StatefulWidget {
@@ -12,9 +15,9 @@ class _ChatHomePageState extends State<ChatHomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey,
+      color: lightColor,
       width: double.infinity,
-      padding: EdgeInsets.all(30),
+      padding: EdgeInsets.only(left: 30, right: 30, top: 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,59 +32,19 @@ class _ChatHomePageState extends State<ChatHomePage> {
                   style: TextStyle(fontSize: 25),
                 ),
                 InkWell(
-                  child: Icon(Icons.settings),
-                  onTap: () {
-                    setState(() {});
-                    showDialog(
-                        context: context,
-                        builder: (context) =>
-                            StatefulBuilder(builder: (context, setState) {
-                              return AlertDialog(
-                                content: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SwitchListTile(
-                                        title: Text("Dark Mode"),
-                                        value: popUpSwitch,
-                                        onChanged: (val) {
-                                          popUpSwitch = val;
-                                          setState(() {});
-                                        }),
-                                    ListTile(
-                                      leading: Text("Need Help"),
-                                    ),
-                                    ListTile(
-                                      leading: Text("About Us"),
-                                    ),
-                                    ListTile(
-                                      leading: Text("Privacy Policy"),
-                                    ),
-                                  ],
-                                ),
-                                actions: [
-                                  TextButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.red)),
-                                    child: Text(
-                                      "Close",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  )
-                                ],
-                              );
-                            }));
-                    setState(() {});
-                  },
+                  child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.yellow,
+                      child: Icon(
+                        Icons.person_add,
+                        color: Colors.black,
+                      )),
+                  onTap: () {},
                 )
               ],
             ),
           ),
+          // ignore: prefer_const_constructors
           SizedBox(
             height: 50,
           ),
@@ -90,26 +53,31 @@ class _ChatHomePageState extends State<ChatHomePage> {
           SizedBox(
             height: 50,
           ),
-          Container(
-              height: MediaQuery.of(context).size.height / 2,
-              child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CircleAvatar(),
-                            Text("Hash Value"),
-                            Icon(Icons.arrow_right)
-                          ],
+          Expanded(
+            child: Container(
+                child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+                              ),
+                              Text("Hash Value"),
+                              Icon(Icons.arrow_right)
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  }))
+                      );
+                    })),
+          )
         ],
       ),
     );

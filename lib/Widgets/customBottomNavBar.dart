@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
@@ -14,7 +16,7 @@ class CustomBottomNavBar extends StatelessWidget {
     return NavigationBarTheme(
       data: NavigationBarThemeData(indicatorColor: Colors.teal),
       child: NavigationBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.yellow,
         height: 70,
         animationDuration: Duration(seconds: 1),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
@@ -22,6 +24,11 @@ class CustomBottomNavBar extends StatelessWidget {
         onDestinationSelected: onSelect,
         // ignore: prefer_const_literals_to_create_immutables
         destinations: [
+          NavigationDestination(
+            selectedIcon: Icon(Icons.settings),
+            label: "Settings",
+            icon: Icon(Icons.settings),
+          ),
           NavigationDestination(
             selectedIcon: Icon(Icons.chat_bubble),
             label: "Chats",
