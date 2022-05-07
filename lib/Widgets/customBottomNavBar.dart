@@ -36,11 +36,14 @@ class CustomBottomNavBar extends StatelessWidget {
           ),
           NavigationDestination(
             selectedIcon: CircleAvatar(
+              radius: 15,
               backgroundImage: NetworkImage(
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg",
+              ),
             ),
             label: "Profile", // TODO Profile iconda olur.
             icon: CircleAvatar(
+              radius: 15,
               backgroundImage: NetworkImage(
                   "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
             ),

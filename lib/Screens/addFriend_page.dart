@@ -11,23 +11,44 @@ class AddFriendPage extends StatelessWidget {
     return Scaffold(
       body: Center(
           child: Container(
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  child: Icon(Icons.qr_code),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0), //or 15.0
+                  child: Container(
+                    height: 70.0,
+                    width: 70.0,
+                    color: Color(0xffFF0E58),
+                    child: Icon(Icons.qr_code, color: Colors.white, size: 50.0),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Text("Add with Qr"),
               ],
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  child: Icon(Icons.numbers),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0), //or 15.0
+                  child: Container(
+                    height: 70.0,
+                    width: 70.0,
+                    color: Color(0xffFF0E58),
+                    child: Icon(Icons.numbers_sharp,
+                        color: Colors.white, size: 50.0),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Text("Add with Hash Value"),
               ],

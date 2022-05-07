@@ -58,7 +58,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
           Expanded(
             child: Container(
                 child: ListView.builder(
-                    itemCount: 5,
+                    itemCount: 10,
                     itemBuilder: (BuildContext context, int index) => ChatCard(
                         press: () => Navigator.push(
                             context,

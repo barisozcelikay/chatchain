@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:chatchain/Screens/profile_qr_page.dart';
 import 'package:flutter/material.dart';
+
+import 'addFriend_page.dart';
 
 class ProfilePage extends StatefulWidget {
   static String id = "profile_screen";
@@ -35,6 +38,27 @@ class _ProfilePageState extends State<ProfilePage> {
                             backgroundImage: NetworkImage(
                                 "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
                             backgroundColor: Colors.transparent,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Center(
+                          child: InkWell(
+                            onTap: () =>
+                                Navigator.pushNamed(context, ProfileQrPage.id),
+                            child: Container(
+                              width: 100,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(border: Border.all()),
+                              padding: EdgeInsets.symmetric(vertical: 15),
+                              child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text("Show Qr"),
+                                    Icon(Icons.qr_code)
+                                  ]),
+                            ),
                           ),
                         ),
                         ListTile(
