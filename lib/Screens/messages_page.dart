@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:chatchain/Widgets/chatBottom.dart';
 import 'package:flutter/material.dart';
 
 class MessagesPage extends StatelessWidget {
@@ -10,7 +11,20 @@ class MessagesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: Container(),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) => Text("Hello"),
+              ),
+            ),
+          ),
+          ChatBottom(),
+        ],
+      ),
     );
   }
 }

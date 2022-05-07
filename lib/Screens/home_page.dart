@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:chatchain/Screens/addFriend_page.dart';
 import 'package:chatchain/Screens/chat_home_page.dart';
 import 'package:chatchain/Screens/settings_page.dart';
 import 'package:chatchain/Widgets/customBottomNavBar.dart';
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   List<Widget> pages = [SettingsPage(), ChatHomePage(), ProfilePage()];
   List<Widget> appBarTexts = [
     Text("Settings"),
@@ -25,19 +26,30 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              title: appBarTexts[_currentIndex],
-            ),
-            body: pages[_currentIndex],
-            bottomNavigationBar: CustomBottomNavBar(
-              currentIndex: _currentIndex,
-              onSelect: (int val) {
-                setState(() {
-                  _currentIndex = val;
-                });
-              },
-            )));
+    return Scaffold(
+        appBar: AppBar(
+          title: appBarTexts[_currentIndex],
+          toolbarHeight: 100,
+          actions: _currentIndex == 1
+              ? [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: InkWell(
+                        onTap: () =>
+                            Navigator.pushNamed(context, AddFriendPage.id),
+                        child: CircleAvatar(child: Icon(Icons.person_add))),
+                  )
+                ]
+              : null,
+        ),
+        body: pages[_currentIndex],
+        bottomNavigationBar: CustomBottomNavBar(
+          currentIndex: _currentIndex,
+          onSelect: (int val) {
+            setState(() {
+              _currentIndex = val;
+            });
+          },
+        ));
   }
 }

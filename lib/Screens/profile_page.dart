@@ -18,19 +18,6 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           children: [
             Expanded(
-              flex: 2,
-              child: Container(
-                color: Colors.white,
-                alignment: Alignment.center,
-                child: CircleAvatar(
-                  radius: 100.0,
-                  backgroundImage: NetworkImage(
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
-                  backgroundColor: Colors.transparent,
-                ),
-              ),
-            ),
-            Expanded(
               flex: 3,
               child: SingleChildScrollView(
                 child: Container(
@@ -40,6 +27,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Container(
+                          color: Colors.white,
+                          alignment: Alignment.center,
+                          child: CircleAvatar(
+                            radius: 100.0,
+                            backgroundImage: NetworkImage(
+                                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        ),
                         ListTile(
                           leading: Icon(Icons.people),
                           title: Text("User Informations"),
