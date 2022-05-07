@@ -16,12 +16,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   List<Widget> pages = [SettingsPage(), ChatHomePage(), ProfilePage()];
+  List<Widget> appBarTexts = [
+    Text("Settings"),
+    Text("My Chats"),
+    Text("Profile")
+  ];
   static bool popUpSwitch = false;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            appBar: AppBar(
+              title: appBarTexts[_currentIndex],
+            ),
             body: pages[_currentIndex],
             bottomNavigationBar: CustomBottomNavBar(
               currentIndex: _currentIndex,

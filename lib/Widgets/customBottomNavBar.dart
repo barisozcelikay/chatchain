@@ -14,9 +14,9 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationBarTheme(
-      data: NavigationBarThemeData(indicatorColor: Colors.teal),
+      data: NavigationBarThemeData(indicatorColor: Colors.white),
       child: NavigationBar(
-        backgroundColor: Colors.yellow,
+        backgroundColor: Colors.white,
         height: 70,
         animationDuration: Duration(seconds: 1),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
@@ -35,9 +35,15 @@ class CustomBottomNavBar extends StatelessWidget {
             icon: Icon(Icons.chat_bubble_outline),
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.person),
-            label: "Profile",
-            icon: Icon(Icons.person_outline),
+            selectedIcon: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+            ),
+            label: "Profile", // TODO Profile iconda olur.
+            icon: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+            ),
           ),
         ],
       ),

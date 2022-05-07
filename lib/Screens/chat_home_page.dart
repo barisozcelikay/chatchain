@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:chatchain/Screens/messages_page.dart';
 import 'package:chatchain/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,6 @@ class _ChatHomePageState extends State<ChatHomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: lightColor,
       width: double.infinity,
       padding: EdgeInsets.only(left: 30, right: 30, top: 40),
       child: Column(
@@ -59,20 +59,29 @@ class _ChatHomePageState extends State<ChatHomePage> {
                     itemCount: 10,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
-                        color: Colors.transparent,
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MessagesPage(),
                               ),
-                              Text("Hash Value"),
-                              Icon(Icons.arrow_right)
-                            ],
+                            );
+                          },
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+                                ),
+                                Text("Hash Value"),
+                                Icon(Icons.arrow_right)
+                              ],
+                            ),
                           ),
                         ),
                       );

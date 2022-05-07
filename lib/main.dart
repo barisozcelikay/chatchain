@@ -1,38 +1,29 @@
-import '/home_page.dart';
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+
+import 'package:chatchain/Screens/messages_page.dart';
+import 'package:chatchain/theme.dart';
+import 'Screens/home_page.dart';
 import 'Screens/profile_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChatChain());
 }
 
-class MyApp extends StatelessWidget {
+class ChatChain extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Chat Chain',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      debugShowCheckedModeBanner: false,
+      theme: lightThemeData(context),
+      darkTheme: darkThemeData(context),
       home: HomePage(),
       routes: {
         HomePage.id: (context) => HomePage(),
-        ProfilePage.id: (context) => ProfilePage()
+        MessagesPage.id: (context) => MessagesPage()
       },
     );
   }
 }
-
-
-
-
-/*
-routes: {
-        WelcomeScreen.id: (context) => WelcomeScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        RegistrationScreen.id: (context) => RegistrationScreen(),
-        ChatMenuScreen.id: (context) => ChatMenuScreen(),
-        ProfileScreen.id: (context) => ProfileScreen()
-      }
-*/

@@ -1,3 +1,4 @@
+import 'package:chatchain/theme.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -16,7 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Dark Mode"),
+              // Text("Dark Mode")),
               Text("Need Help"),
               Text("About Us"),
               Text("Privacy Policy"),
