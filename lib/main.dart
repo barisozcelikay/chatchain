@@ -3,6 +3,7 @@
 import 'package:chatchain/Screens/addFriend_page.dart';
 import 'package:chatchain/Screens/messages_page.dart';
 import 'package:chatchain/Screens/profile_qr_page.dart';
+import 'package:chatchain/Screens/qrCodeScanner_page.dart';
 import 'package:chatchain/theme.dart';
 import 'Screens/home_page.dart';
 import 'Screens/profile_page.dart';
@@ -26,7 +27,8 @@ class ChatChain extends StatelessWidget {
         HomePage.id: (context) => HomePage(),
         MessagesPage.id: (context) => MessagesPage(),
         AddFriendPage.id: (context) => AddFriendPage(),
-        ProfileQrPage.id: (context) => ProfileQrPage()
+        ProfileQrPage.id: (context) => ProfileQrPage(),
+        QrCodeScannerPage.id: (context) => QrCodeScannerPage()
       },
     );
   }

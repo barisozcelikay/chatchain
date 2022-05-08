@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:chatchain/Screens/qrCodeScanner_page.dart';
 import 'package:flutter/material.dart';
 
 class AddFriendPage extends StatelessWidget {
@@ -9,6 +10,7 @@ class AddFriendPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
           child: Container(
         child: Column(
@@ -18,13 +20,18 @@ class AddFriendPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0), //or 15.0
-                  child: Container(
-                    height: 70.0,
-                    width: 70.0,
-                    color: Color(0xffFF0E58),
-                    child: Icon(Icons.qr_code, color: Colors.white, size: 50.0),
+                InkWell(
+                  onTap: () =>
+                      Navigator.pushNamed(context, QrCodeScannerPage.id),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0), //or 15.0
+                    child: Container(
+                      height: 70.0,
+                      width: 70.0,
+                      color: Color(0xffFF0E58),
+                      child:
+                          Icon(Icons.qr_code, color: Colors.white, size: 50.0),
+                    ),
                   ),
                 ),
                 SizedBox(
