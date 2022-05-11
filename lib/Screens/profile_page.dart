@@ -137,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 setState(() {});
                                               },
                                               child: ListTile(
-                                                leading: Text("Take photos"),
+                                                leading: Text("Take photo"),
                                                 trailing:
                                                     Icon(Icons.camera_enhance),
                                               ),
