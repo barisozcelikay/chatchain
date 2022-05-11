@@ -104,12 +104,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         alignment: Alignment.center,
                         child: Stack(children: [
                           // ignore: unnecessary_null_compxarison
-
                           CircleAvatar(
                             radius: 100.0,
                             backgroundImage: ProfilePage._image == null
-                                ? NetworkImage(
-                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg")
+                                ? AssetImage('assets/images/no-profile.png')
                                 : FileImage(ProfilePage._image!)
                                     as ImageProvider,
                             backgroundColor: Colors.transparent,
@@ -124,36 +122,58 @@ class _ProfilePageState extends State<ProfilePage> {
                                 showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          InkWell(
-                                            onTap: () async {
-                                              //ProfilePage.camera = true;
-                                              File? file = await getPhoto(true);
-                                              ProfilePage._image = file;
-                                              setState(() {});
-                                            },
-                                            child: ListTile(
-                                              leading: Text("Take photo"),
-                                              trailing:
-                                                  Icon(Icons.camera_enhance),
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 10),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            InkWell(
+                                              onTap: () async {
+                                                //ProfilePage.camera = true;
+                                                File? file =
+                                                    await getPhoto(true);
+                                                ProfilePage._image = file;
+                                                setState(() {});
+                                              },
+                                              child: ListTile(
+                                                leading: Text("Take photo"),
+                                                trailing:
+                                                    Icon(Icons.camera_enhance),
+                                              ),
                                             ),
-                                          ),
-                                          InkWell(
-                                            onTap: () async {
-                                              // ProfilePage.file = true;
-                                              File? file =
-                                                  await getPhoto(false);
-                                              ProfilePage._image = file;
-                                              setState(() {});
-                                            },
-                                            child: ListTile(
-                                              leading: Text("Choose photo"),
-                                              trailing: Icon(Icons.folder),
+                                            InkWell(
+                                              onTap: () async {
+                                                // ProfilePage.file = true;
+                                                File? file =
+                                                    await getPhoto(false);
+                                                ProfilePage._image = file;
+                                                setState(() {});
+                                              },
+                                              child: ListTile(
+                                                leading: Text("Choose photo"),
+                                                trailing: Icon(Icons.folder),
+                                              ),
                                             ),
-                                          )
-                                        ],
+                                            InkWell(
+                                              onTap: () async {
+                                                ProfilePage._image = null;
+                                                setState(() {});
+                                              },
+                                              child: ListTile(
+                                                leading: Text(
+                                                  "Remove photo",
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                                trailing: Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       );
                                     });
                               },

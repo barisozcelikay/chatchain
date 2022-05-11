@@ -38,7 +38,10 @@ class _HomePageState extends State<HomePage> {
                     child: InkWell(
                         onTap: () =>
                             Navigator.pushNamed(context, AddFriendPage.id),
-                        child: CircleAvatar(child: Icon(Icons.person_add))),
+                        child: CircleAvatar(
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.white,
+                            child: Icon(Icons.person_add))),
                   )
                 ]
               : null,

@@ -22,6 +22,36 @@ class MessagesPage extends StatefulWidget {
 class _MessagesPageState extends State<MessagesPage> {
   bool settings_pressed = false;
 
+  showAlertDialog(BuildContext context) {
+    // Create AlertDialog
+    AlertDialog alert = AlertDialog(
+      backgroundColor: Colors.transparent,
+      content: Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ]),
+        child: Image(
+          fit: BoxFit.fitHeight,
+          image: NetworkImage(
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+        ),
+      ),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +60,17 @@ class _MessagesPageState extends State<MessagesPage> {
         title: Row(
           children: [
             BackButton(),
-            CircleAvatar(
-              backgroundImage: NetworkImage(
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+            InkWell(
+              onTap: () {
+                showAlertDialog(context);
+              },
+              child: Hero(
+                tag: "pp",
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+                ),
+              ),
             ),
             SizedBox(width: 20 * 0.75),
             Column(
@@ -58,7 +96,17 @@ class _MessagesPageState extends State<MessagesPage> {
                 return [
                   PopupMenuItem<int>(
                     value: 0,
-                    child: Text("Change Background Color"),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text("Change Background Color"),
+                        CircleAvatar(
+                          backgroundColor: Colors.red,
+                          maxRadius: 15,
+                        )
+                      ],
+                    ),
                   ),
                 ];
               },

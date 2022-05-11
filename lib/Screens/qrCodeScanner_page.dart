@@ -58,6 +58,10 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Scan QR"),
+        centerTitle: true,
+      ),
       body: Stack(
         alignment: Alignment.center,
         children: [

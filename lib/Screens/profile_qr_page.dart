@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -11,11 +13,13 @@ class ProfileQrPage extends StatefulWidget {
 
 class _ProfileQrPageState extends State<ProfileQrPage> {
   bool isCopied = false;
+  String hashValue = "0xff23sdf45DFC23njhFSCFHNS52";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text("Profile"),
         centerTitle: true,
       ),
       body: Column(
@@ -27,9 +31,9 @@ class _ProfileQrPageState extends State<ProfileQrPage> {
               child: Container(
                 color: Colors.white,
                 child: QrImage(
-                  data: 'My name is Baris',
+                  data: hashValue,
                   version: QrVersions.auto,
-                  size: 320,
+                  size: 250,
                 ),
               ),
             ),
@@ -39,11 +43,16 @@ class _ProfileQrPageState extends State<ProfileQrPage> {
           ),
           Column(
             children: [
-              Text("0xffSAFSAdf2334921sfFADSFDA"),
+              Text(
+                hashValue,
+                style: TextStyle(fontWeight: FontWeight.w100, fontSize: 15),
+              ),
+              SizedBox(
+                height: 5,
+              ),
               InkWell(
                   onTap: () {
-                    Clipboard.setData(
-                        ClipboardData(text: "0xffSAFSAdf2334921sfFADSFDA"));
+                    Clipboard.setData(ClipboardData(text: hashValue));
                     setState(() {
                       isCopied = true;
                     });
@@ -53,7 +62,9 @@ class _ProfileQrPageState extends State<ProfileQrPage> {
                       : Text(
                           "Copied",
                           style: TextStyle(
-                              color: Colors.green, fontWeight: FontWeight.bold),
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ))
             ],
           )

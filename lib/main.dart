@@ -30,7 +30,7 @@ class ChatChain extends StatelessWidget {
         AddFriendPage.id: (context) => AddFriendPage(),
         ProfileQrPage.id: (context) => ProfileQrPage(),
         QrCodeScannerPage.id: (context) => QrCodeScannerPage(),
-        AboutUsPage.id: (context) => AboutUsPage()
+        AboutUsPage.id: (context) => AboutUsPage(),
       },
     );
   }
