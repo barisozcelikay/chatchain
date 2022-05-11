@@ -1,5 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
 
+import 'package:chatchain/Screens/aboutUs_page.dart';
 import 'package:chatchain/Screens/addFriend_page.dart';
 import 'package:chatchain/Screens/messages_page.dart';
 import 'package:chatchain/Screens/profile_qr_page.dart';
@@ -28,7 +29,8 @@ class ChatChain extends StatelessWidget {
         MessagesPage.id: (context) => MessagesPage(),
         AddFriendPage.id: (context) => AddFriendPage(),
         ProfileQrPage.id: (context) => ProfileQrPage(),
-        QrCodeScannerPage.id: (context) => QrCodeScannerPage()
+        QrCodeScannerPage.id: (context) => QrCodeScannerPage(),
+        AboutUsPage.id: (context) => AboutUsPage()
       },
     );
   }

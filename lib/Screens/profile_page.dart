@@ -23,9 +23,13 @@ class _ProfilePageState extends State<ProfilePage> {
     super.dispose();
   }
 
-  Future<File?> takePhoto() async {
-    final XFile? image =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+  Future<File?> getPhoto(bool isCamera) async {
+    final XFile? image;
+    if (isCamera) {
+      image = await ImagePicker().pickImage(source: ImageSource.camera);
+    } else {
+      image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    }
 
     final File? file = File(image!.path);
     return file;
@@ -47,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
   */
-
+/*
   final snackBar = SnackBar(
     duration: Duration(seconds: 5),
     backgroundColor: Colors.white,
@@ -77,15 +81,11 @@ class _ProfilePageState extends State<ProfilePage> {
       ],
     )),
   );
+  */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        File? f = await takePhoto();
-        ProfilePage._image = f;
-        setState(() {});
-      }),
       extendBodyBehindAppBar: false,
       body: Center(
         child: Column(
@@ -118,9 +118,44 @@ class _ProfilePageState extends State<ProfilePage> {
                             bottom: 0,
                             right: 20,
                             child: InkWell(
-                              onTap: () async {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                              onTap: () {
+                                /*ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);*/
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          InkWell(
+                                            onTap: () async {
+                                              //ProfilePage.camera = true;
+                                              File? file = await getPhoto(true);
+                                              ProfilePage._image = file;
+                                              setState(() {});
+                                            },
+                                            child: ListTile(
+                                              leading: Text("Take photo"),
+                                              trailing:
+                                                  Icon(Icons.camera_enhance),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () async {
+                                              // ProfilePage.file = true;
+                                              File? file =
+                                                  await getPhoto(false);
+                                              ProfilePage._image = file;
+                                              setState(() {});
+                                            },
+                                            child: ListTile(
+                                              leading: Text("Choose photo"),
+                                              trailing: Icon(Icons.folder),
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    });
                               },
                               child: CircleAvatar(
                                 backgroundColor: Colors.red,
@@ -148,10 +183,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           onTap: () =>
                               Navigator.pushNamed(context, ProfileQrPage.id),
                           child: Container(
-                            width: 100,
+                            constraints: BoxConstraints(
+                              minWidth: 30,
+                              maxWidth: 120,
+                            ),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(border: Border.all()),
-                            padding: EdgeInsets.symmetric(vertical: 15),
+                            padding: EdgeInsets.all(10),
                             child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
