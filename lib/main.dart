@@ -2,12 +2,14 @@
 
 import 'package:chatchain/Screens/aboutUs_page.dart';
 import 'package:chatchain/Screens/addFriend_page.dart';
+import 'package:chatchain/Screens/login_page.dart';
 import 'package:chatchain/Screens/messages_page.dart';
 import 'package:chatchain/Screens/profile_qr_page.dart';
 import 'package:chatchain/Screens/qrCodeScanner_page.dart';
+import 'package:chatchain/Screens/signup_page.dart';
+import 'package:chatchain/Screens/welcome_page.dart';
 import 'package:chatchain/theme.dart';
 import 'Screens/home_page.dart';
-import 'Screens/profile_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,8 +25,11 @@ class ChatChain extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightThemeData(context),
       darkTheme: darkThemeData(context),
-      home: HomePage(),
+      home: WelcomePage(),
       routes: {
+        WelcomePage.id: (context) => WelcomePage(),
+        SignupPage.id: (context) => SignupPage(),
+        LoginPage.id: (context) => LoginPage(),
         HomePage.id: (context) => HomePage(),
         MessagesPage.id: (context) => MessagesPage(),
         AddFriendPage.id: (context) => AddFriendPage(),

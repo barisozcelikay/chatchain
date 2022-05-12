@@ -1,4 +1,4 @@
-package com.example.chatchain
+package barisozcelikay.chatchain
 
 import io.flutter.embedding.android.FlutterActivity
 

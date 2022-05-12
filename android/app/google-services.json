@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "423045189865",
+    "project_id": "chatchain-dd26d",
+    "storage_bucket": "chatchain-dd26d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423045189865:android:f2c1d6497f7caab586e078",
+        "android_client_info": {
+          "package_name": "barisozcelikay.chatchain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423045189865-i5s2g0j9t836d2a45us05tfeuprucd9s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBarPUCk87POLGZVAYIRCi4ryFVgqGms5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423045189865-i5s2g0j9t836d2a45us05tfeuprucd9s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
