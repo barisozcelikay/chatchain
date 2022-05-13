@@ -7,12 +7,16 @@ import 'package:chatchain/Screens/messages_page.dart';
 import 'package:chatchain/Screens/profile_qr_page.dart';
 import 'package:chatchain/Screens/qrCodeScanner_page.dart';
 import 'package:chatchain/Screens/signup_page.dart';
+import 'package:chatchain/Screens/test_page.dart';
 import 'package:chatchain/Screens/welcome_page.dart';
 import 'package:chatchain/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'Screens/home_page.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(ChatChain());
 }
 
@@ -25,7 +29,7 @@ class ChatChain extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightThemeData(context),
       darkTheme: darkThemeData(context),
-      home: WelcomePage(),
+      home: TestPage(),
       routes: {
         WelcomePage.id: (context) => WelcomePage(),
         SignupPage.id: (context) => SignupPage(),
