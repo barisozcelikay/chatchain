@@ -8,6 +8,7 @@ import 'package:chatchain/Screens/profile_qr_page.dart';
 import 'package:chatchain/Screens/qrCodeScanner_page.dart';
 import 'package:chatchain/Screens/signup_page.dart';
 import 'package:chatchain/Screens/test_page.dart';
+import 'package:chatchain/Screens/signup_page.dart';
 import 'package:chatchain/Screens/welcome_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/theme.dart';
@@ -26,30 +27,23 @@ class ChatChain extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<FirebaseAuthService>(
-          create: (_) => FirebaseAuthService(),
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Chat Chain',
-        debugShowCheckedModeBanner: false,
-        theme: lightThemeData(context),
-        darkTheme: darkThemeData(context),
-        home: WelcomePage(),
-        routes: {
-          WelcomePage.id: (context) => WelcomePage(),
-          SignupPage.id: (context) => SignupPage(),
-          LoginPage.id: (context) => LoginPage(),
-          HomePage.id: (context) => HomePage(),
-          MessagesPage.id: (context) => MessagesPage(),
-          AddFriendPage.id: (context) => AddFriendPage(),
-          ProfileQrPage.id: (context) => ProfileQrPage(),
-          QrCodeScannerPage.id: (context) => QrCodeScannerPage(),
-          AboutUsPage.id: (context) => AboutUsPage(),
-        },
-      ),
+    return MaterialApp(
+      title: 'Chat Chain',
+      debugShowCheckedModeBanner: false,
+      theme: lightThemeData(context),
+      darkTheme: darkThemeData(context),
+      home: WelcomePage(),
+      routes: {
+        WelcomePage.id: (context) => WelcomePage(),
+        SignUpPage.id: (context) => SignUpPage(),
+        LoginPage.id: (context) => LoginPage(),
+        HomePage.id: (context) => HomePage(),
+        MessagesPage.id: (context) => MessagesPage(),
+        AddFriendPage.id: (context) => AddFriendPage(),
+        ProfileQrPage.id: (context) => ProfileQrPage(),
+        QrCodeScannerPage.id: (context) => QrCodeScannerPage(),
+        AboutUsPage.id: (context) => AboutUsPage(),
+      },
     );
   }
 }

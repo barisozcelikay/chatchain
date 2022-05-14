@@ -2,7 +2,6 @@ import 'package:chatchain/Screens/home_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/animation/fadeAnimation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   static String id = "login_page";
@@ -15,7 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   late String email;
   late String password;
 
-  FirebaseAuthService _auth = FirebaseAuthService();
+  final FirebaseAuthService _auth = FirebaseAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -128,15 +127,6 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-            FadeAnimation(
-                1.2,
-                Container(
-                  height: MediaQuery.of(context).size.height / 3,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/chatchainlogo.png'),
-                          fit: BoxFit.cover)),
-                ))
           ],
         ),
       ),

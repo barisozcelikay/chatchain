@@ -87,7 +87,7 @@ class WelcomePage extends StatelessWidget {
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            Navigator.pushNamed(context, SignupPage.id);
+                            Navigator.pushNamed(context, SignUpPage.id);
                           },
                           color: Colors.yellow,
                           elevation: 0,
