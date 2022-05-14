@@ -1,8 +1,22 @@
+import 'package:chatchain/Screens/home_page.dart';
+import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/animation/fadeAnimation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   static String id = "login_page";
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late String email;
+  late String password;
+
+  FirebaseAuthService _auth = FirebaseAuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +95,11 @@ class LoginPage extends StatelessWidget {
                           child: MaterialButton(
                             minWidth: double.infinity,
                             height: 60,
-                            onPressed: () {},
+                            onPressed: () async {
+                              print("Hello");
+                              await _auth.signInWithEmailAndPassword(
+                                  email, password);
+                            },
                             color: Colors.greenAccent,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -116,7 +134,7 @@ class LoginPage extends StatelessWidget {
                   height: MediaQuery.of(context).size.height / 3,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/background.png'),
+                          image: AssetImage('assets/images/chatchainlogo.png'),
                           fit: BoxFit.cover)),
                 ))
           ],
@@ -138,6 +156,17 @@ class LoginPage extends StatelessWidget {
           height: 5,
         ),
         TextField(
+          onChanged: (val) {
+            if (label == "Email") {
+              setState(() {
+                email = val;
+              });
+            } else {
+              setState(() {
+                password = val;
+              });
+            }
+          },
           obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),

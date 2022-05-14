@@ -1,8 +1,21 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/animation/fadeAnimation.dart';
 import 'package:flutter/material.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   static String id = "signup_page";
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  late String email;
+  late String password;
+
+  FirebaseAuthService _auth = FirebaseAuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,8 +69,6 @@ class SignupPage extends StatelessWidget {
                   FadeAnimation(1.2, makeInput(label: "Email")),
                   FadeAnimation(
                       1.3, makeInput(label: "Password", obscureText: true)),
-                  FadeAnimation(1.4,
-                      makeInput(label: "Confirm Password", obscureText: true)),
                 ],
               ),
               FadeAnimation(
@@ -75,7 +86,10 @@ class SignupPage extends StatelessWidget {
                     child: MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
-                      onPressed: () {},
+                      onPressed: () async {
+                        await _auth.createUserWithEmailAndPassword(
+                            email, password);
+                      },
                       color: Colors.greenAccent,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -120,6 +134,17 @@ class SignupPage extends StatelessWidget {
           height: 5,
         ),
         TextField(
+          onChanged: (val) {
+            if (label == "Email") {
+              setState(() {
+                email = val;
+              });
+            } else {
+              setState(() {
+                password = val;
+              });
+            }
+          },
           obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
