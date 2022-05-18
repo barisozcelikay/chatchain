@@ -2,6 +2,10 @@
 
 import 'dart:io';
 
+import 'package:chatchain/Services/firebase_auth_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,7 +27,11 @@ class _SignUpPageState extends State<SignUpPage> {
   DateTime _dateTime = DateTime.now();
   late String name = "";
   late String surname = "";
-  late String dateOfBirth = "";
+  late String dateOfBirth = _dateTime.day.toString() +
+      "/" +
+      _dateTime.month.toString() +
+      "/" +
+      _dateTime.year.toString();
   late String profileImage = "";
 
   late String email = "";
@@ -33,6 +41,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   late EmailAuth emailAuth;
   late String verificationCode = "";
+  bool isVerified = false;
+  bool isOver18 = false;
   /*List<Widget> informationList() => [
     Text("Name")
   ];
@@ -61,14 +71,71 @@ class _SignUpPageState extends State<SignUpPage> {
       print("ERROR");
     }
   }
+  //123452022
 
-  void verifyOTP() async {
-    var result = emailAuth.validateOtp(recipientMail: email, userOtp: "2312");
+  bool isAgeOver18(String date) {
+    String year = date.substring(date.length - 4);
+
+    int intYear = int.parse(year);
+    if (DateTime.now().year - intYear >= 18) {
+      setState(() {
+        isOver18 = true;
+      });
+    } else {
+      setState(() {
+        isOver18 = false;
+      });
+    }
+    return isOver18;
+  }
+
+  bool isEmail(String email) {
+    if (email.contains("@")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool isPassword(String password) {
+    if (password.length >= 8) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool isPasswordConfirmd(String password, String confrimPassword) {
+    if (password == confrimPassword) {
+      return true;
+    }
+    return false;
+  }
+
+  bool isStep1ButtonActive(String date) {
+    return isAgeOver18(date);
+  }
+
+  bool isStep2ButtonActive(
+      String email, String password, String confrimPassword) {
+    return (isEmail(email) &&
+        isPassword(password) &&
+        isPasswordConfirmd(password, confrimPassword));
+  }
+
+  Future<bool> verifyOTP(String code) async {
+    var result = emailAuth.validateOtp(recipientMail: email, userOtp: code);
     if (result) {
       print("otp verified");
+      setState(() {
+        isVerified = true;
+      });
+      return true;
     } else {
       print("Invalid");
+      return false;
     }
+    return false;
   }
 
   List<Step> getSteps() => [
@@ -310,6 +377,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     onChanged: (value) {
                       setState(() {
                         email = value;
+                        isStep2ButtonActive(email, password, confirm_password);
                       });
                     },
                     cursorColor: Colors.white,
@@ -354,7 +422,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: TextField(
                     onChanged: ((value) {
-                      password = value;
+                      setState(() {
+                        password = value;
+                        isStep2ButtonActive(email, password, confirm_password);
+                      });
                     }),
                     obscureText: showPassword == false ? true : false,
                     cursorColor: Colors.white,
@@ -407,7 +478,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: TextField(
                     onChanged: (value) {
-                      confirm_password = value;
+                      setState(() {
+                        confirm_password = value;
+                        isStep2ButtonActive(email, password, confirm_password);
+                      });
                     },
                     obscureText: true,
                     cursorColor: Colors.white,
@@ -542,10 +616,32 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: Colors.blue[700]),
                         ),
                       ),
-                      onCompleted: (String value) {
+                      onCompleted: (String value) async {
                         setState(() {
                           verificationCode = value;
+                          verifyOTP(verificationCode);
                         });
+                        if (isVerified) {
+                          final User? currentUser = (await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: email, password: password))
+                              .user;
+                          if (currentUser != null) {
+                            await FirebaseFirestore.instance
+                                .collection("Users")
+                                .doc(currentUser.uid)
+                                .set({
+                              'uid': currentUser.uid,
+                              'name': name,
+                              'surname': surname,
+                              'date_of_birth': dateOfBirth,
+                              'image': "null",
+                              'email': email,
+                            });
+                          }
+                        } else {
+                          print("olmadı");
+                        }
                       },
                       onEditing: (bool value) {
                         setState(() {
@@ -559,7 +655,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ],
             )),
         Step(
-            isActive: currentStep >= 3,
+            isActive: currentStep >= 4,
             title: Text("Hash Value"),
             content: Column(
               children: [
@@ -627,6 +723,22 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: FadeAnimation(
                   2,
                   Stepper(
+                    onStepTapped: (val) {
+                      if (currentStep != 4) {
+                        setState(() {
+                          currentStep = val;
+                        });
+                      }
+                    },
+                    /* onStepTapped: (val) {
+                      setState(() {
+                        if (val != 4) {
+                          currentStep = val;
+                        }
+                      });
+                    },
+                    */
+                    physics: ClampingScrollPhysics(),
                     currentStep: currentStep,
                     type: StepperType.vertical,
                     steps: getSteps(),
@@ -637,26 +749,105 @@ class _SignUpPageState extends State<SignUpPage> {
                           Expanded(
                             child: ElevatedButton(
                               onPressed: details.onStepContinue,
-                              child: Text(currentStep == 3 || currentStep == 2
-                                  ? 'Verify'
-                                  : "Continue"),
+                              child: (() {
+                                switch (currentStep) {
+                                  case 0:
+                                    return Text("Continue");
+
+                                  case 1:
+                                    return Text("Continue");
+
+                                  case 2:
+                                    return Text("Verify Email");
+
+                                  case 3:
+                                    return Text("Get Hash");
+
+                                  case 4:
+                                    return Text("Lets Chat");
+
+                                  default:
+                                }
+                              }()),
+                              /*currentStep != 3
+                                  ? Text(
+                                      currentStep == 2 ? 'Verify' : "Continue")
+                                  : Text("Get Hash"),
+                                  */
                             ),
                           ),
                           SizedBox(
                             width: 10,
                           ),
-                          if (currentStep != 0) //&& currentStep != 4
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: details.onStepCancel,
-                                child: Text('Back'),
-                              ),
-                            ),
+                          if (currentStep > 0 && currentStep != 4)
+                            !isVerified
+                                ? Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: details.onStepCancel,
+                                      child: Text(currentStep == 3
+                                          ? 'Re-send'
+                                          : 'Back'),
+                                    ),
+                                  )
+                                : SizedBox()
+
+                          //&& currentStep != 4
                         ],
                       );
                     },
-                    onStepContinue: () async {
+                    onStepContinue: (() {
+                      switch (currentStep) {
+                        case 0:
+                          return isStep1ButtonActive(dateOfBirth) == true
+                              ? () {
+                                  setState(() {
+                                    currentStep += 1;
+                                  });
+                                }
+                              : null;
+
+                        case 1:
+                          return isStep2ButtonActive(
+                                      email, password, confirm_password) ==
+                                  true
+                              ? () {
+                                  setState(() {
+                                    currentStep += 1;
+                                  });
+                                }
+                              : null;
+
+                        case 2:
+                          return () async {
+                            sendOTP();
+                            setState(() {
+                              currentStep += 1;
+                            });
+                          };
+
+                        case 3:
+                          return isVerified
+                              ? () {
+                                  if (isVerified) {
+                                    setState(() {
+                                      currentStep += 1;
+                                    });
+                                  }
+                                }
+                              : null;
+
+                        case 4:
+                          return () {
+                            setState(() {});
+                          };
+
+                        default:
+                      }
+                    }()),
+
+                    /*() async {
                       final lastStep = currentStep == getSteps().length - 1;
+
                       if (lastStep) {
                         // firebase
 
@@ -669,15 +860,23 @@ class _SignUpPageState extends State<SignUpPage> {
                       if (currentStep == 3) {
                         sendOTP();
                       }
-                    },
+                    },*/
                     onStepCancel: () {
                       final firstStep = currentStep == 0;
                       if (firstStep) {
                         // dont cancel
                       } else {
-                        setState(() {
-                          currentStep -= 1;
-                        });
+                        if (currentStep == 3) {
+                          setState(() {
+                            verificationCode = "";
+                            isVerified = false;
+                            sendOTP();
+                          });
+                        } else {
+                          setState(() {
+                            currentStep -= 1;
+                          });
+                        }
                       }
                     },
                   ),

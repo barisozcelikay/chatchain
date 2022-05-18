@@ -7,6 +7,7 @@ import 'package:chatchain/Screens/messages_page.dart';
 import 'package:chatchain/Screens/profile_qr_page.dart';
 import 'package:chatchain/Screens/qrCodeScanner_page.dart';
 import 'package:chatchain/Screens/signup_page.dart';
+import 'package:chatchain/Screens/test.dart';
 import 'package:chatchain/Screens/test_page.dart';
 import 'package:chatchain/Screens/signup_page.dart';
 import 'package:chatchain/Screens/welcome_page.dart';
@@ -32,13 +33,11 @@ class ChatChain extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightThemeData(context),
       darkTheme: darkThemeData(context),
-      home: WelcomePage(),
+      home: WelcomePage(false, false),
       routes: {
-        WelcomePage.id: (context) => WelcomePage(),
         SignUpPage.id: (context) => SignUpPage(),
         LoginPage.id: (context) => LoginPage(),
         HomePage.id: (context) => HomePage(),
-        MessagesPage.id: (context) => MessagesPage(),
         AddFriendPage.id: (context) => AddFriendPage(),
         ProfileQrPage.id: (context) => ProfileQrPage(),
         QrCodeScannerPage.id: (context) => QrCodeScannerPage(),

@@ -3,11 +3,15 @@ class Userr {
     required this.uid,
     required this.email,
     required this.photoUrl,
-    required this.displayName,
+    required this.surname,
+    required this.name,
+    required this.date_of_birth,
   });
 
   final String uid;
+  final String name;
+  final String surname;
+  final String date_of_birth;
   final String email;
   final String photoUrl;
-  final String displayName;
 }

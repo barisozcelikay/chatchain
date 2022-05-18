@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 
@@ -7,12 +7,20 @@ import '../../../constants.dart';
 class ChatCard extends StatelessWidget {
   const ChatCard({
     Key? key,
+    required this.name,
+    required this.surname,
+    required this.last_message,
+    required this.last_time,
     //required this.chat,
     required this.press,
   }) : super(key: key);
 
   //final Chat chat;
   final VoidCallback press;
+  final String name;
+  final String surname;
+  final String last_message;
+  final String last_time;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +64,7 @@ class ChatCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Barış",
+                      name.toString() + " " + surname.toString(),
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
@@ -64,7 +72,7 @@ class ChatCard extends StatelessWidget {
                     Opacity(
                       opacity: 0.64,
                       child: Text(
-                        "son mesaj",
+                        last_message,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -75,7 +83,7 @@ class ChatCard extends StatelessWidget {
             ),
             Opacity(
               opacity: 0.64,
-              child: Text("11:22"),
+              child: Text(last_time),
             ),
           ],
         ),

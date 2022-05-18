@@ -96,8 +96,13 @@ class _LoginPageState extends State<LoginPage> {
                             height: 60,
                             onPressed: () async {
                               print("Hello");
-                              await _auth.signInWithEmailAndPassword(
+                              var a = await _auth.signInWithEmailAndPassword(
                                   email, password);
+
+                              if (a != null) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, HomePage.id, (route) => false);
+                              }
                             },
                             color: Colors.greenAccent,
                             elevation: 0,

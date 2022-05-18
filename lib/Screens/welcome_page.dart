@@ -1,14 +1,66 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
 import 'package:chatchain/Screens/login_page.dart';
 import 'package:chatchain/Screens/signup_page.dart';
 import 'package:chatchain/animation/fadeAnimation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   static String id = "welcome_page";
+  WelcomePage(this.isLogedOut, this.isDeletedAccount);
+
+  final bool isLogedOut;
+  final bool isDeletedAccount;
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  bool isLogedIn = false;
+
+  bool isDeletedAccount = false;
+
+  bool isLogedOut = false;
+
+  @override
+  void initState() {
+    isLogedOut = widget.isLogedOut;
+    isDeletedAccount = widget.isDeletedAccount;
+    if (isLogedOut || isDeletedAccount) {
+      Future.delayed(Duration.zero, () {
+        this.showSnackBar(isLogedOut, isDeletedAccount);
+      });
+    }
+  }
+
+  void showSnackBar(bool isLogedOut, bool isDeletedAccount) {
+    final snackBar = SnackBar(
+      duration: Duration(seconds: 5),
+      backgroundColor: Colors.white,
+      behavior: SnackBarBehavior.fixed,
+      content: Container(
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          isLogedOut == true
+              ? ListTile(
+                  leading: Text("Loged Out"), trailing: Icon(Icons.logout))
+              : ListTile(
+                  leading: Text("Your account is deleted"),
+                  trailing: Icon(Icons.delete),
+                )
+        ],
+      )),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(FirebaseAuth.instance.currentUser?.uid);
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -24,7 +76,7 @@ class WelcomePage extends StatelessWidget {
                   FadeAnimation(
                       1,
                       Text(
-                        "Welcome",
+                        "Welcome to Chat Chain",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 30),
                       )),

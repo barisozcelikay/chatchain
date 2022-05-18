@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +14,32 @@ class ProfileQrPage extends StatefulWidget {
 class _ProfileQrPageState extends State<ProfileQrPage> {
   bool isCopied = false;
   String hashValue = "0xff23sdf45DFC23njhFSCFHNS52";
+
+  void showSnackBar(String hashValue) {
+    final snackBar = SnackBar(
+      duration: Duration(seconds: 5),
+      backgroundColor: Colors.white,
+      behavior: SnackBarBehavior.fixed,
+      content: Container(
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            hashValue,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text("Hash value is copied !",
+              style: TextStyle(color: Colors.black, fontSize: 12)),
+        ],
+      )),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +81,7 @@ class _ProfileQrPageState extends State<ProfileQrPage> {
                     Clipboard.setData(ClipboardData(text: hashValue));
                     setState(() {
                       isCopied = true;
+                      showSnackBar(hashValue);
                     });
                   },
                   child: !isCopied

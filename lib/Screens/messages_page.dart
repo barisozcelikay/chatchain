@@ -4,8 +4,12 @@ import 'package:chatchain/Widgets/chatBottom.dart';
 import 'package:flutter/material.dart';
 
 class MessagesPage extends StatefulWidget {
-  const MessagesPage({Key? key}) : super(key: key);
+  const MessagesPage({Key? key, required this.name, required this.surname})
+      : super(key: key);
   static String id = "messages_page";
+  final String name;
+  final String surname;
+
   static Color backgroundColor = Colors.white;
   static Decoration o = BoxDecoration(
     image: DecorationImage(
@@ -21,6 +25,15 @@ class MessagesPage extends StatefulWidget {
 
 class _MessagesPageState extends State<MessagesPage> {
   bool settings_pressed = false;
+
+  late String name;
+  late String surname;
+
+  @override
+  void initState() {
+    name = widget.name;
+    surname = widget.surname;
+  }
 
   showAlertDialog(BuildContext context) {
     // Create AlertDialog
@@ -77,7 +90,7 @@ class _MessagesPageState extends State<MessagesPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Kristin Watson",
+                  name + " " + surname,
                   style: TextStyle(fontSize: 16),
                 ),
                 Text(
@@ -154,32 +167,30 @@ class _MessagesPageState extends State<MessagesPage> {
           //SizedBox(width: 20 / 2),
         ],
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: MessagesPage.backgroundColor == Colors.white
-                    ? MessagesPage.o
-                    : null,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) => Text("Hello"),
-                  ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: MessagesPage.backgroundColor == Colors.white
+                  ? MessagesPage.o
+                  : null,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (context, index) => Text("Hello"),
                 ),
               ),
             ),
-            ChatBottom(),
-          ],
-        ),
+          ),
+          ChatBottom(),
+        ],
       ),
     );
   }
 }
 
-AppBar buildAppBar(val) {
+/*AppBar buildAppBar(val) {
   return AppBar(
     automaticallyImplyLeading: false,
     title: Row(
@@ -194,7 +205,7 @@ AppBar buildAppBar(val) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Kristin Watson",
+              ,
               style: TextStyle(fontSize: 16),
             ),
             Text(
@@ -220,3 +231,4 @@ AppBar buildAppBar(val) {
     ],
   );
 }
+*/

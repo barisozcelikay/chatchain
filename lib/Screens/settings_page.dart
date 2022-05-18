@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, deprecated_member_use
 
 import 'package:chatchain/Screens/aboutUs_page.dart';
+import 'package:chatchain/Screens/welcome_page.dart';
+import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -57,13 +60,23 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         SettingsCard(
             onPressed: () {
-              Navigator.pushNamed(context, AboutUsPage.id);
+              print(FirebaseAuth.instance.currentUser!.uid);
+              FirebaseAuthService().signOut();
+              print("Çıkış Yapıldı");
+
+              print(FirebaseAuth.instance.currentUser!.uid);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WelcomePage(true, false),
+                  ),
+                  (route) => false);
             },
             title: "Log Out",
             icon: Icons.output),
         SettingsCard(
           onPressed: () {
-            Navigator.pushNamed(context, AboutUsPage.id);
+            showAlertDialog(context);
           },
           title: "Delete Account",
           icon: Icons.delete_outline,
@@ -73,8 +86,46 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 }
 
+showAlertDialog(BuildContext context) {
+  // Create button
 
+  Widget cancelButton = FlatButton(
+    child: Text("Cancel"),
+    onPressed: () => Navigator.of(context).pop(),
+  );
 
+  Widget deleteButton = FlatButton(
+    color: Colors.red,
+    child: Text(
+      "Delete Account",
+      style: TextStyle(color: Colors.white),
+    ),
+    onPressed: () {
+      FirebaseAuthService().deleteUser();
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WelcomePage(false, true),
+          ),
+          (route) => false);
+    },
+  );
+
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Deleting Account"),
+    content: Text("Are you sure to delete your account ?"),
+    actions: [cancelButton, deleteButton],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 
 /*  Expanded(
             child: Container(
