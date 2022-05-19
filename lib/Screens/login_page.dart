@@ -1,6 +1,9 @@
+import 'package:chatchain/Classes/userr.dart';
 import 'package:chatchain/Screens/home_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/animation/fadeAnimation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -100,6 +103,15 @@ class _LoginPageState extends State<LoginPage> {
                                   email, password);
 
                               if (a != null) {
+                                Userr? user =
+                                    await FirebaseAuthService().getUserData();
+                                Userr.sUid = user!.uid;
+                                Userr.sdate_of_birth = user.date_of_birth;
+                                Userr.semail = user.email;
+                                Userr.sname = user.name;
+                                Userr.sphotoUrl = user.photoUrl;
+                                Userr.ssurname = user.surname;
+
                                 Navigator.pushNamedAndRemoveUntil(
                                     context, HomePage.id, (route) => false);
                               }

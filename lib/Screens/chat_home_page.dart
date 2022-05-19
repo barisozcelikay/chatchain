@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:chatchain/Classes/userr.dart';
 import 'package:chatchain/Screens/messages_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/Widgets/chatCard.dart';
@@ -44,6 +45,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
               var surname = docData["surname"];
               var last_message = docData["last_message"];
               var last_time = docData["last_time"];
+              var uid = docData["uid"];
 
               return Expanded(
                 child: ChatCard(
@@ -55,9 +57,12 @@ class _ChatHomePageState extends State<ChatHomePage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => MessagesPage(
-                                name: name,
-                                surname: surname,
-                              ))),
+                              name: name,
+                              surname: surname,
+                              friend_uid: uid,
+                              user_uid: FirebaseAuth.instance.currentUser!.uid,
+                              username: Userr.sname,
+                              usersurname: Userr.ssurname))),
                 ),
               );
             });

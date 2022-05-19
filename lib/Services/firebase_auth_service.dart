@@ -1,6 +1,7 @@
 import 'package:chatchain/Classes/userr.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FirebaseAuthService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
@@ -67,11 +68,60 @@ class FirebaseAuthService {
       String surname = profileInfo["surname"];
       String email = profileInfo["email"];
       String date_of_birth = profileInfo["date_of_birth"];
+      String photoUrl = profileInfo["image"];
+
+      var imageName = photoUrl;
+      print(imageName);
+
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('Users')
+          .child(uid)
+          .child(imageName);
+
+      var new_url = await ref.getDownloadURL();
 
       user = Userr(
           uid: uid,
           email: email,
-          photoUrl: "null",
+          photoUrl: new_url,
+          name: name,
+          surname: surname,
+          date_of_birth: date_of_birth);
+
+      return user;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<Userr?> getFriendData(String userId) async {
+    Userr? user = null;
+    try {
+      var profileInfo = await userCollection.doc(userId).get();
+
+      String uid = profileInfo["uid"];
+      String name = profileInfo["name"];
+      String surname = profileInfo["surname"];
+      String email = profileInfo["email"];
+      String date_of_birth = profileInfo["date_of_birth"];
+      String photoUrl = profileInfo["image"];
+
+      var imageName = photoUrl;
+      print(imageName);
+
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('Users')
+          .child(uid)
+          .child(imageName);
+
+      var new_url = await ref.getDownloadURL();
+
+      user = Userr(
+          uid: uid,
+          email: email,
+          photoUrl: new_url,
           name: name,
           surname: surname,
           date_of_birth: date_of_birth);

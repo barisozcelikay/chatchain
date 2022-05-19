@@ -4,18 +4,22 @@ import 'dart:io';
 
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:email_auth/email_auth.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
 
+import '../Classes/userr.dart';
 import '../animation/fadeAnimation.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
-  static File? _image;
+
   static String id = "signup_page";
 
   @override
@@ -39,16 +43,17 @@ class _SignUpPageState extends State<SignUpPage> {
   late String confirm_password = "";
   bool showPassword = false;
 
+  File? _image;
+
   late EmailAuth emailAuth;
   late String verificationCode = "";
   bool isVerified = false;
   bool isOver18 = false;
-  /*List<Widget> informationList() => [
-    Text("Name")
-  ];
-  */
 
   bool _onEditing = true;
+
+  var path = null;
+  var fileName = null;
 
   Future<File?> getPhoto(bool isCamera) async {
     final XFile? image;
@@ -72,6 +77,16 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
   //123452022
+
+  Future uploadFile(String filePath, String fileName) async {
+    File file = File(filePath);
+
+    try {
+      await FirebaseStorage.instance
+          .ref('Users/${Userr.sUid}/$fileName')
+          .putFile(file);
+    } on firebase_core.FirebaseException catch (e) {}
+  }
 
   bool isAgeOver18(String date) {
     String year = date.substring(date.length - 4);
@@ -113,7 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   bool isStep1ButtonActive(String date) {
-    return isAgeOver18(date);
+    return isAgeOver18(date) && name.length >= 2 && surname.length >= 2;
   }
 
   bool isStep2ButtonActive(
@@ -304,7 +319,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                   onTap: () async {
                                     //ProfilePage.camera = true;
                                     File? file = await getPhoto(true);
-                                    SignUpPage._image = file;
+                                    setState(() {
+                                      _image = file;
+                                    });
 
                                     setState(() {});
                                   },
@@ -316,8 +333,26 @@ class _SignUpPageState extends State<SignUpPage> {
                                 InkWell(
                                   onTap: () async {
                                     // ProfilePage.file = true;
+
+                                    final results = FilePicker.platform
+                                        .pickFiles(
+                                            allowMultiple: false,
+                                            type: FileType.custom,
+                                            allowedExtensions: [
+                                          'png',
+                                          'jpg'
+                                        ]).then((value) {
+                                      setState(() {
+                                        path = value?.files.single.path;
+                                        fileName = value?.files.single.name;
+                                      });
+                                    });
+
                                     File? file = await getPhoto(false);
-                                    SignUpPage._image = file;
+                                    setState(() {
+                                      _image = file;
+                                    });
+
                                     setState(() {});
                                   },
                                   child: ListTile(
@@ -327,7 +362,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ),
                                 InkWell(
                                   onTap: () async {
-                                    SignUpPage._image = null;
+                                    setState(() {
+                                      _image = null;
+                                    });
+
                                     setState(() {});
                                   },
                                   child: ListTile(
@@ -351,9 +389,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     alignment: Alignment.center,
                     child: CircleAvatar(
                       radius: 80.0,
-                      backgroundImage: SignUpPage._image == null
+                      backgroundImage: _image == null
                           ? AssetImage('assets/images/no-profile.png')
-                          : FileImage(SignUpPage._image!) as ImageProvider,
+                          : FileImage(_image!) as ImageProvider,
                       backgroundColor: Colors.transparent,
                     ),
                   ),
@@ -536,10 +574,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           alignment: Alignment.center,
                           child: CircleAvatar(
                             radius: 90.0,
-                            backgroundImage: SignUpPage._image == null
+                            backgroundImage: _image == null
                                 ? AssetImage('assets/images/no-profile.png')
-                                : FileImage(SignUpPage._image!)
-                                    as ImageProvider,
+                                : FileImage(_image!) as ImageProvider,
                             backgroundColor: Colors.transparent,
                           ),
                         ),
@@ -635,9 +672,21 @@ class _SignUpPageState extends State<SignUpPage> {
                               'name': name,
                               'surname': surname,
                               'date_of_birth': dateOfBirth,
-                              'image': "null",
+                              'image': fileName,
                               'email': email,
                             });
+
+                            uploadFile(path, fileName)
+                                .then((value) => print("Done"));
+
+                            Userr? user =
+                                await FirebaseAuthService().getUserData();
+                            Userr.sUid = user!.uid;
+                            Userr.sdate_of_birth = user.uid;
+                            Userr.semail = user.email;
+                            Userr.sname = user.name;
+                            Userr.sphotoUrl = user.photoUrl;
+                            Userr.ssurname = user.surname;
                           }
                         } else {
                           print("olmadı");
@@ -723,13 +772,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: FadeAnimation(
                   2,
                   Stepper(
-                    onStepTapped: (val) {
-                      if (currentStep != 4) {
-                        setState(() {
-                          currentStep = val;
-                        });
-                      }
-                    },
                     /* onStepTapped: (val) {
                       setState(() {
                         if (val != 4) {

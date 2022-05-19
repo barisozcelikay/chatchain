@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:chatchain/Classes/userr.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
@@ -35,18 +36,31 @@ class CustomBottomNavBar extends StatelessWidget {
             icon: Icon(Icons.chat_bubble_outline),
           ),
           NavigationDestination(
-            selectedIcon: CircleAvatar(
-              radius: 15,
-              backgroundImage: NetworkImage(
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg",
-              ),
-            ),
+            selectedIcon: Userr.sphotoUrl != ""
+                ? CircleAvatar(
+                    radius: 15.0,
+                    backgroundImage: NetworkImage(Userr.sphotoUrl),
+                    /*: FileImage(ProfilePage._image!)
+                                    as ImageProvider,*/
+                  )
+                : CircleAvatar(
+                    radius: 15.0,
+                    backgroundImage: AssetImage('assets/images/no-profile.png'),
+                  ),
             label: "Profile", // TODO Profile iconda olur.
-            icon: CircleAvatar(
-              radius: 15,
-              backgroundImage: NetworkImage(
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
-            ),
+            icon: Userr.sphotoUrl != ""
+                ? CircleAvatar(
+                    radius: 15.0,
+                    backgroundImage: NetworkImage(Userr.sphotoUrl),
+                    /*: FileImage(ProfilePage._image!)
+                                    as ImageProvider,*/
+                    backgroundColor: Colors.transparent,
+                  )
+                : CircleAvatar(
+                    radius: 15.0,
+                    backgroundColor: Colors.red,
+                    backgroundImage: AssetImage('assets/images/no-profile.png'),
+                  ),
           ),
         ],
       ),

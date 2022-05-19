@@ -84,89 +84,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
-/*
-  loadImage() async {
-    //current user id
-    final _userID = _firebaseAuth.currentUser?.uid;
-
-    //collect the image name
-    DocumentSnapshot variable =
-        await FirebaseFirestore.instance.collection('Users').doc(_userID).get();
-
-    //a list of images names (i need only one)
-    var _file_name = variable['image'];
-    print("Barış");
-    print(_file_name);
-
-    //select the image url
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child("Users")
-        .child("$_userID")
-        .child(_file_name);
-
-    print(ref);
-    //get image url from firebase storage
-    var url = await ref.getDownloadURL();
-    print(url);
-    setState(() {
-      url = url;
-    });
-  }
-*/
-/*
-  Future getImage(bool isCamera) async {
-    File? image;
-    if (isCamera) {
-      image =
-          (await ImagePicker().pickImage(source: ImageSource.camera)) as File?;
-      // Capture a photo
-    } else {
-      image =
-          (await ImagePicker().pickImage(source: ImageSource.gallery)) as File?;
-    }
-    setState(() {
-      _image = image!;
-    });
-  }
-  */
-/*
-  final snackBar = SnackBar(
-    duration: Duration(seconds: 5),
-    backgroundColor: Colors.white,
-    behavior: SnackBarBehavior.fixed,
-    content: Container(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        InkWell(
-          onTap: () {
-            //ProfilePage.camera = true;
-          },
-          child: ListTile(
-            leading: Text("Take photo"),
-            trailing: Icon(Icons.camera_enhance),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            // ProfilePage.file = true;
-          },
-          child: ListTile(
-            leading: Text("Choose photo"),
-            trailing: Icon(Icons.folder),
-          ),
-        )
-      ],
-    )),
-  );
-  */
 
   Future getImageUrl(String uid) async {
     DocumentSnapshot variable =
         await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
     var imageName = variable['image'];
+    print(imageName);
 
     final ref = FirebaseStorage.instance
         .ref()
@@ -176,17 +100,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
     var new_url = await ref.getDownloadURL();
 
+    Userr.sphotoUrl = new_url;
+
     url = new_url;
     return url;
   }
 
   Future uploadFile(String filePath, String fileName) async {
     File file = File(filePath);
-
+    print(Userr.sUid);
     try {
       await FirebaseStorage.instance
-          .ref('Users/ma4ajILLGfP2VuGymg6SwnStVni1/carousel-bose.png')
+          .ref('Users/${Userr.sUid}/$fileName')
           .putFile(file);
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(Userr.sUid)
+          .update({'image': fileName});
+      setState(() {});
+      Userr.sphotoUrl = fileName;
+      setState(() {});
     } on firebase_core.FirebaseException catch (e) {}
   }
 
@@ -384,7 +317,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(name)
+                                  Text(Userr.sname)
                                 ],
                               ),
                             ),
@@ -397,7 +330,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(surname)
+                                  Text(Userr.ssurname)
                                 ],
                               ),
                             ),
@@ -410,20 +343,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(email)
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(20),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Phone : ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text("+90 598 764 65 43")
+                                  Text(Userr.semail)
                                 ],
                               ),
                             ),
@@ -436,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(date_of_birth)
+                                  Text(Userr.sdate_of_birth)
                                 ],
                               ),
                             )

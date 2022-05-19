@@ -14,4 +14,11 @@ class Userr {
   final String date_of_birth;
   final String email;
   final String photoUrl;
+
+  static String sname = "";
+  static String ssurname = "";
+  static String sUid = "";
+  static String sdate_of_birth = "";
+  static String sphotoUrl = "";
+  static String semail = "";
 }

@@ -16,11 +16,11 @@ class Test extends StatefulWidget {
 class _TestState extends State<Test> {
   var url = null;
 
-  Future getImageUrl(String uid) async {
+  Future getImageUrl(String uid, String imageName) async {
     DocumentSnapshot variable =
         await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
-    var imageName = variable['image'];
+    var image = variable['image'];
 
     final ref = FirebaseStorage.instance
         .ref()
