@@ -105,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                               if (a != null) {
                                 Userr? user =
                                     await FirebaseAuthService().getUserData();
+
                                 Userr.sUid = user!.uid;
                                 Userr.sdate_of_birth = user.date_of_birth;
                                 Userr.semail = user.email;

@@ -78,7 +78,9 @@ class FriendInfoPage extends StatelessWidget {
                     'name': friend_name,
                     'surname': friend_surname,
                     'last_message': "",
-                    'last_time': ""
+                    'last_time': Timestamp.fromDate(DateTime.now()),
+                    'last_message_uid': userUid,
+                    'readed': true
                   });
 
                   await FirebaseFirestore.instance
@@ -91,7 +93,9 @@ class FriendInfoPage extends StatelessWidget {
                     'name': userName,
                     'surname': userSurname,
                     'last_message': "",
-                    'last_time': ""
+                    'last_time': Timestamp.fromDate(DateTime.now()),
+                    'last_message_uid': userUid,
+                    'readed': true
                   });
 
                   print("Arkadaş oldular");

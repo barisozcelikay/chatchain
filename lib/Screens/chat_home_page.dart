@@ -24,6 +24,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
           .collection("Users")
           .doc(FirebaseAuth.instance.currentUser?.uid.toString())
           .collection("Friends")
+          .orderBy("last_time", descending: true)
           .snapshots(),
       builder: (
         BuildContext context,
@@ -44,15 +45,39 @@ class _ChatHomePageState extends State<ChatHomePage> {
               var name = docData["name"];
               var surname = docData["surname"];
               var last_message = docData["last_message"];
-              var last_time = docData["last_time"];
+              Timestamp last_time = docData["last_time"];
               var uid = docData["uid"];
+
+              var last_uid = docData["last_message_uid"];
+
+              var readed = docData["readed"];
+
+              var day = last_time.toDate().day.toString();
+              day = day.length == 2 ? day : "0$day";
+
+              var month = last_time.toDate().month.toString();
+              month = month.length == 2 ? month : "0$month";
+
+              var hour = last_time.toDate().hour.toString();
+              hour = hour.length == 2 ? hour : "0$hour";
+
+              var minute = last_time.toDate().minute.toString();
+              minute = minute.length == 2 ? minute : "0$minute";
+
+              String last_time_string =
+                  hour + ":" + minute + "\n" + day + "/" + month;
+
+              print(last_time);
 
               return Expanded(
                 child: ChatCard(
                   name: name,
                   surname: surname,
                   last_message: last_message,
-                  last_time: last_time,
+                  last_time: last_time_string,
+                  last_uid: last_uid,
+                  user_uid: FirebaseAuth.instance.currentUser!.uid,
+                  readed: readed,
                   press: () => Navigator.push(
                       context,
                       MaterialPageRoute(

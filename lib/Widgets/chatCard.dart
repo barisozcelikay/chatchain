@@ -13,6 +13,9 @@ class ChatCard extends StatelessWidget {
     required this.last_time,
     //required this.chat,
     required this.press,
+    required this.last_uid,
+    required this.user_uid,
+    required this.readed,
   }) : super(key: key);
 
   //final Chat chat;
@@ -21,71 +24,79 @@ class ChatCard extends StatelessWidget {
   final String surname;
   final String last_message;
   final String last_time;
+  final String user_uid;
+  final String last_uid;
+  final bool readed;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: press,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: kDefaultPadding, vertical: kDefaultPadding * 0.75),
-        child: Row(
-          children: [
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundImage: NetworkImage(
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
-                ),
-                if (true)
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      height: 16,
-                      width: 16,
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            width: 3),
+      child: Container(
+        color: readed != true ? Colors.redAccent : Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+              horizontal: kDefaultPadding, vertical: kDefaultPadding * 0.75),
+          child: Row(
+            children: [
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundImage: NetworkImage(
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+                  ),
+                  if (readed != true)
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        height: 16,
+                        width: 16,
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              width: 3),
+                        ),
                       ),
-                    ),
-                  )
-              ],
-            ),
-            Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name.toString() + " " + surname.toString(),
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(height: 8),
-                    Opacity(
-                      opacity: 0.64,
-                      child: Text(
-                        last_message,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                    )
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name.toString() + " " + surname.toString(),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 8),
+                      Opacity(
+                        opacity: 0.64,
+                        child: Text(
+                          last_uid != user_uid
+                              ? last_message
+                              : "You : $last_message",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Opacity(
-              opacity: 0.64,
-              child: Text(last_time),
-            ),
-          ],
+              Opacity(
+                opacity: 0.64,
+                child: Text(last_time),
+              ),
+            ],
+          ),
         ),
       ),
     );

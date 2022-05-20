@@ -1,7 +1,13 @@
 import 'dart:io';
 
+import 'package:chatchain/Classes/userr.dart';
+import 'package:chatchain/Screens/friend_info_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import '../Services/firebase_auth_service.dart';
 
 class QrCodeScannerPage extends StatefulWidget {
   const QrCodeScannerPage({Key? key}) : super(key: key);
@@ -14,8 +20,11 @@ class QrCodeScannerPage extends StatefulWidget {
 class _QrCodeScannerPageState extends State<QrCodeScannerPage> {
   final qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
-  Barcode? barcode;
-
+  Barcode? barcode = null;
+  Userr? friend_user;
+  bool showError = true;
+  bool already = false;
+  var user;
   @override
   void dispose() {
     controller?.dispose();
@@ -55,28 +64,78 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage> {
     });
   }
 
+  getFriend(String uid) async {
+    print("oye");
+    friend_user = await FirebaseAuthService().getFriendData(uid);
+    user = await FirebaseAuthService().getUserData();
+    /*FirebaseFirestore.instance
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("Friends")
+        .get()
+        .then((value) {
+      value.docs.map((e) {
+        var a = e.get("uid");
+        print(a);
+        if (a == barcode!.code.toString()) {
+          setState(() {
+            already = true;
+          });
+        }
+      });
+    }); */
+    if (friend_user != null && user != null) {
+      print("Buldum");
+
+      Future.delayed(Duration(milliseconds: 0), () {
+        setState(() {
+          showError = false;
+        });
+      });
+    } else {
+      Future.delayed(Duration(milliseconds: 0), () {
+        setState(() {
+          showError = true;
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Scan QR"),
-        centerTitle: true,
-      ),
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          buildQrView(context),
-          Positioned(bottom: 10, child: buildResult())
-        ],
-      ),
-    );
+    if (barcode != null && showError == true) {
+      goFriendInfo();
+    }
+
+    return showError == true
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text("Scan QR"),
+              centerTitle: true,
+            ),
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                buildQrView(context),
+                Positioned(bottom: 10, child: buildResult())
+              ],
+            ),
+          )
+        : FriendInfoPage(friend_user!.name, friend_user!.surname, "", "",
+            barcode!.code.toString(), user!.uid, user.name, user.surname);
   }
 
   Widget buildResult() {
     return Text(
-      barcode != null ? '${barcode!.code}' : 'Scan a code',
+      barcode == null ? 'Scan a code' : '${barcode!.code}',
       maxLines: 3,
       style: TextStyle(color: Colors.white),
     );
+  }
+
+  goFriendInfo() async {
+    if (barcode?.code != null) {
+      await getFriend(barcode!.code.toString());
+    }
   }
 }

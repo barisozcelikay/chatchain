@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:chatchain/Screens/home_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -672,7 +673,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               'name': name,
                               'surname': surname,
                               'date_of_birth': dateOfBirth,
-                              'image': fileName,
+                              'image': fileName == null ? "" : fileName,
                               'email': email,
                             });
 
@@ -881,6 +882,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         case 4:
                           return () {
                             setState(() {});
+                            Navigator.pushNamed(context, HomePage.id);
                           };
 
                         default:

@@ -117,9 +117,9 @@ class _ProfilePageState extends State<ProfilePage> {
           .collection('Users')
           .doc(Userr.sUid)
           .update({'image': fileName});
-      setState(() {});
-      Userr.sphotoUrl = fileName;
-      setState(() {});
+      setState(() {
+        Userr.sphotoUrl = fileName;
+      });
     } on firebase_core.FirebaseException catch (e) {}
   }
 
@@ -219,6 +219,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     uploadFile(path, fileName)
                                                         .then((value) =>
                                                             print("Done"));
+
+                                                    setState(() {});
                                                   },
                                                 );
 

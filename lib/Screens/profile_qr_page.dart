@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:chatchain/Services/firebase_auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -13,7 +15,7 @@ class ProfileQrPage extends StatefulWidget {
 
 class _ProfileQrPageState extends State<ProfileQrPage> {
   bool isCopied = false;
-  String hashValue = "0xff23sdf45DFC23njhFSCFHNS52";
+  String hashValue = FirebaseAuth.instance.currentUser!.uid.toString();
 
   void showSnackBar(String hashValue) {
     final snackBar = SnackBar(

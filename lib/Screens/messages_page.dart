@@ -2,6 +2,7 @@
 
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/Widgets/chatBottom.dart';
+import 'package:chatchain/Widgets/messageBubble.dart';
 import 'package:chatchain/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,10 +50,22 @@ class _MessagesPageState extends State<MessagesPage> {
   late String name;
   late String surname;
 
+  bool sendButton = false;
+
+  void read() {
+    _firestore
+        .collection("Users")
+        .doc(widget.user_uid)
+        .collection("Friends")
+        .doc(widget.friend_uid)
+        .update({'readed': true});
+  }
+
   @override
   void initState() {
     name = widget.name;
     surname = widget.surname;
+    read();
   }
 
   showAlertDialog(BuildContext context) {
@@ -126,6 +139,7 @@ class _MessagesPageState extends State<MessagesPage> {
           ],
         ),
         actions: [
+          /*
           PopupMenuButton(
               // add icon, by default "3 dot" icon
               icon: Icon(Icons.settings),
@@ -161,43 +175,13 @@ class _MessagesPageState extends State<MessagesPage> {
                   print("Logout menu is selected.");
                 }
               }),
-
-          /*
-          Visibility(
-              visible: settings_pressed,
-              child: Stack(
-                children: [
-                  Positioned(
-                      right: 10,
-                      child: Container(
-                        height: 10,
-                        width: 10,
-                        child: Text("hello"),
-                      ))
-                ],
-              )),
-          Visibility(
-            visible: !settings_pressed,
-            child: IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                setState(() {
-                  settings_pressed = settings_pressed == true ? false : true;
-                });
-              },
-            ),
-          ),
-          */
-          //SizedBox(width: 20 / 2),
+              */
         ],
       ),
       body: Column(
         children: [
           Expanded(
             child: Container(
-              decoration: MessagesPage.backgroundColor == Colors.white
-                  ? MessagesPage.o
-                  : null,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -208,69 +192,187 @@ class _MessagesPageState extends State<MessagesPage> {
                       friend_uid: widget.friend_uid,
                       user_uid: widget.user_uid,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(color: k_mainColor, width: 2.0),
-                        ),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(
-                            child: TextField(
-                              controller: messageTextController,
-                              onChanged: (value) {
-                                //Do something with the user input.
-                                setState(() {
-                                  messageText = value;
-                                });
-                              },
-                              decoration: kMessageTextFieldDecoration,
-                            ),
-                          ),
-                          FlatButton(
-                            onPressed: () {
-                              messageTextController.clear();
-                              //Implement send functionality.
-                              _firestore
-                                  .collection("Users")
-                                  .doc(widget.user_uid)
-                                  .collection("Friends")
-                                  .doc(widget.friend_uid)
-                                  .collection("Messages")
-                                  .add({
-                                'text': messageText,
-                                'sender':
-                                    widget.username + " " + widget.usersurname
-                              });
-
-                              _firestore
-                                  .collection("Users")
-                                  .doc(widget.friend_uid)
-                                  .collection("Friends")
-                                  .doc(widget.user_uid)
-                                  .collection("Messages")
-                                  .add({
-                                'text': messageText,
-                                'sender':
-                                    widget.username + " " + widget.usersurname
-                              });
-                            },
-                            child: Text(
-                              'Send',
-                              style: kSendButtonTextStyle,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
             ),
           ),
-          //ChatBottom(),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: kDefaultPadding,
+              vertical: kDefaultPadding / 2,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0, 4),
+                  blurRadius: 32,
+                  color: Color(0xFF087949).withOpacity(0.08),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              child: Row(
+                children: [
+                  Icon(Icons.mic, color: kPrimaryColor),
+                  SizedBox(width: kDefaultPadding),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding * 0.75,
+                      ),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.sentiment_satisfied_alt_outlined,
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .color!
+                                .withOpacity(0.64),
+                          ),
+                          SizedBox(width: kDefaultPadding / 4),
+                          Expanded(
+                            child: TextField(
+                              controller: messageTextController,
+                              onChanged: (val) {
+                                setState(() {
+                                  messageText = val;
+                                  if (messageText.length > 0) {
+                                    sendButton = true;
+                                  } else {
+                                    sendButton = false;
+                                  }
+                                });
+                              },
+                              decoration: InputDecoration(
+                                hintText: "Type message",
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          if (sendButton != true)
+                            Icon(
+                              Icons.attach_file,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!
+                                  .withOpacity(0.64),
+                            ),
+                          if (sendButton != true)
+                            SizedBox(width: kDefaultPadding / 4),
+                          if (sendButton != true)
+                            Icon(
+                              Icons.camera_alt_outlined,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!
+                                  .withOpacity(0.64),
+                            ),
+                          if (sendButton == true)
+                            InkWell(
+                              onTap: () {
+                                final now = DateTime.now();
+                                var year = now.year;
+                                var month = now.month;
+                                var day = now.day;
+                                var hour = now.hour;
+                                var minute = now.minute;
+                                var second = now.second;
+
+                                //Implement send functionality.
+                                // UPDATE MESSAGES
+                                print(messageText);
+                                _firestore
+                                    .collection("Users")
+                                    .doc(widget.user_uid)
+                                    .collection("Friends")
+                                    .doc(widget.friend_uid)
+                                    .collection("Messages")
+                                    .add({
+                                  'text': messageText,
+                                  'sender': widget.username +
+                                      " " +
+                                      widget.usersurname,
+                                  'sender_uid': widget.user_uid,
+                                  'timestamp':
+                                      Timestamp.fromDate(DateTime.now())
+                                });
+
+                                _firestore
+                                    .collection("Users")
+                                    .doc(widget.friend_uid)
+                                    .collection("Friends")
+                                    .doc(widget.user_uid)
+                                    .collection("Messages")
+                                    .add({
+                                  'text': messageText,
+                                  'sender': widget.username +
+                                      " " +
+                                      widget.usersurname,
+                                  'sender_uid': widget.user_uid,
+                                  'timestamp':
+                                      Timestamp.fromDate(DateTime.now())
+                                });
+
+                                // UPDATE CHAT CARD
+
+                                _firestore
+                                    .collection("Users")
+                                    .doc(widget.user_uid)
+                                    .collection("Friends")
+                                    .doc(widget.friend_uid)
+                                    .update({
+                                  'last_message': messageText,
+                                  'last_time':
+                                      Timestamp.fromDate(DateTime.now()),
+                                  'last_message_uid': widget.user_uid,
+                                  'readed': true
+                                });
+
+                                _firestore
+                                    .collection("Users")
+                                    .doc(widget.friend_uid)
+                                    .collection("Friends")
+                                    .doc(widget.user_uid)
+                                    .update({
+                                  'last_message': messageText,
+                                  'last_time':
+                                      Timestamp.fromDate(DateTime.now()),
+                                  'last_message_uid': widget.user_uid,
+                                  'readed': false
+                                });
+
+                                messageTextController.clear();
+                                setState(() {
+                                  messageText = "";
+                                  sendButton = false;
+                                });
+                              },
+                              child: Icon(
+                                Icons.send,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color!
+                                    .withOpacity(0.64),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -294,6 +396,7 @@ class MessagesStream extends StatelessWidget {
           .collection("Friends")
           .doc(friend_uid)
           .collection("Messages")
+          .orderBy('timestamp', descending: false)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -308,16 +411,30 @@ class MessagesStream extends StatelessWidget {
         for (var message in messages) {
           final messageText = message.get("text");
           final messageSender = message.get("sender");
+          final senderUid = message.get("sender_uid");
 
-          final currenUser = FirebaseAuthService().getUserData();
-          if (currenUser == messageSender) {
-            // This is ME
-          }
+          Timestamp last_time = message.get("timestamp");
+
+          var day = last_time.toDate().day.toString();
+          day = day.length == 2 ? day : "0$day";
+
+          var month = last_time.toDate().month.toString();
+          month = month.length == 2 ? month : "0$month";
+
+          var hour = last_time.toDate().hour.toString();
+          hour = hour.length == 2 ? hour : "0$hour";
+
+          var minute = last_time.toDate().minute.toString();
+          minute = minute.length == 2 ? minute : "0$minute";
+
+          String last_time_string =
+              hour + ":" + minute + "-" + day + "/" + month;
 
           final messageBubble = MessageBubble(
             text: messageText,
             sender: messageSender,
-            isMe: currenUser == messageSender,
+            isMe: senderUid == user_uid,
+            time: last_time_string,
           );
           if (messageBubble != "" && messageSender != "") {
             messageBubbles.add(messageBubble);
@@ -327,56 +444,6 @@ class MessagesStream extends StatelessWidget {
         return Expanded(
             child: ListView(reverse: true, children: messageBubbles));
       },
-    );
-  }
-}
-
-class MessageBubble extends StatelessWidget {
-  MessageBubble({this.text, this.sender, this.isMe});
-
-  final sender;
-  final text;
-  final isMe;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Text(
-            sender,
-            style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.black54,
-                fontWeight: FontWeight.w400),
-          ),
-          Material(
-            borderRadius: isMe
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    bottomLeft: Radius.circular(30.0),
-                    bottomRight: Radius.circular(30.0))
-                : BorderRadius.only(
-                    topRight: Radius.circular(30.0),
-                    bottomLeft: Radius.circular(30.0),
-                    bottomRight: Radius.circular(30.0)),
-            elevation: 10.0,
-            color: isMe ? Colors.lightBlueAccent : Colors.white54,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: isMe ? Colors.white : Colors.black54,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

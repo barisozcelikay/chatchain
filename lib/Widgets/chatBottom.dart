@@ -51,6 +51,7 @@ class ChatBottom extends StatelessWidget {
                     SizedBox(width: kDefaultPadding / 4),
                     Expanded(
                       child: TextField(
+                        onChanged: (val) {},
                         decoration: InputDecoration(
                           hintText: "Type message",
                           border: InputBorder.none,
