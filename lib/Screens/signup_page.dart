@@ -79,12 +79,13 @@ class _SignUpPageState extends State<SignUpPage> {
   }
   //123452022
 
-  Future uploadFile(String filePath, String fileName) async {
+  Future uploadFile(String filePath, String fileName, String uid) async {
     File file = File(filePath);
 
     try {
       await FirebaseStorage.instance
-          .ref('Users/${Userr.sUid}/$fileName')
+          .ref('Users/$uid')
+          .child('$fileName')
           .putFile(file);
     } on firebase_core.FirebaseException catch (e) {}
   }
@@ -677,20 +678,20 @@ class _SignUpPageState extends State<SignUpPage> {
                               'email': email,
                             });
 
-                            uploadFile(path, fileName)
+                            uploadFile(path, fileName, currentUser.uid)
                                 .then((value) => print("Done"));
 
-                            Userr? user =
-                                await FirebaseAuthService().getUserData();
-                            Userr.sUid = user!.uid;
-                            Userr.sdate_of_birth = user.uid;
-                            Userr.semail = user.email;
-                            Userr.sname = user.name;
-                            Userr.sphotoUrl = user.photoUrl;
-                            Userr.ssurname = user.surname;
+                            setState(() {
+                              Userr.sUid = currentUser.uid;
+
+                              Userr.sdate_of_birth = dateOfBirth;
+                              Userr.semail = email;
+                              Userr.sname = name;
+                              Userr.sphotoUrl = fileName;
+                              Userr.ssurname = surname;
+                            });
                           }
-                        } else {
-                          print("olmadı");
+                          print("Sign Up user null geldi");
                         }
                       },
                       onEditing: (bool value) {

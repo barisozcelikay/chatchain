@@ -108,10 +108,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future uploadFile(String filePath, String fileName) async {
     File file = File(filePath);
+    print("Geldi mi");
     print(Userr.sUid);
     try {
       await FirebaseStorage.instance
-          .ref('Users/${Userr.sUid}/$fileName')
+          .ref('Users/${Userr.sUid}')
+          .child('$fileName')
           .putFile(file);
       await FirebaseFirestore.instance
           .collection('Users')
