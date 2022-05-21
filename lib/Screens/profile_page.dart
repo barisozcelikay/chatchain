@@ -14,10 +14,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
 
 class ProfilePage extends StatefulWidget {
   static String id = "profile_screen";
-  static File? _image;
+  static File? image;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -31,8 +32,94 @@ class _ProfilePageState extends State<ProfilePage> {
   String email = "Loading";
   String date_of_birth = "Loading";
   String uid = "";
+  String photo_url = "";
   static String url = "";
-  late File _image;
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
+
+  Future imgFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        ProfilePage.image = _image;
+        uploadFile2();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future imgFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        ProfilePage.image = _image;
+        uploadFile2();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future uploadFile2() async {
+    if (_image == null) return;
+    final fileName = basename(_image!.path);
+    final destination = 'Users/${Userr.sUid}';
+
+    try {
+      var a = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(Userr.sUid)
+          .get();
+
+      String old_file_name = a.get('image');
+      print(old_file_name);
+
+      // DELETE OLD
+      final old_ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child(old_file_name);
+      await old_ref.delete();
+
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child('$fileName');
+      // ADD NEW
+      await ref.putFile(_image!);
+
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(Userr.sUid)
+          .update({'image': fileName});
+    } catch (e) {
+      print('error occured');
+    }
+  }
+/*
+  Future pickImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = File(pickedFile!.path);
+    });
+  }
+
+   Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = basename(_image.path);
+    Reference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child('uploads/$fileName');
+    StorageUploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    taskSnapshot.ref.getDownloadURL().then(
+          (value) => print("Done: $value"),
+        );
+  }
+  */
+
   selectImageFromGallery() async {
     final picker = ImagePicker();
 
@@ -77,10 +164,32 @@ class _ProfilePageState extends State<ProfilePage> {
         date_of_birth = user.date_of_birth;
         email = user.email;
         uid = user.uid;
+        photo_url = user.photoUrl;
+      });
+    }
+    if (Userr.sphotoUrl != photo_url) {
+      Userr.sphotoUrl = photo_url;
+    } else {
+      print("Updatelemedi");
+    }
+
+    //getImageUrl(uid);
+  }
+
+  updateUrl() async {
+    Userr? user = await FirebaseAuthService().getUserData();
+    if (user != null) {
+      setState(() {
+        name = user.name;
+        surname = user.surname;
+        date_of_birth = user.date_of_birth;
+        email = user.email;
+        uid = user.uid;
+        photo_url = user.photoUrl;
       });
     }
 
-    getImageUrl(uid);
+    Userr.sphotoUrl = photo_url;
   }
 
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
@@ -115,6 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
           .ref('Users/${Userr.sUid}')
           .child('$fileName')
           .putFile(file);
+
       await FirebaseFirestore.instance
           .collection('Users')
           .doc(Userr.sUid)
@@ -148,10 +258,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         alignment: Alignment.center,
                         child: Stack(children: [
                           // ignore: unnecessary_null_compxarison
-                          url != null
+                          Userr.sphotoUrl != ""
                               ? CircleAvatar(
-                                  radius: 100.0,
-                                  backgroundImage: NetworkImage(url),
+                                  radius: 120.0,
+                                  backgroundImage:
+                                      NetworkImage(Userr.sphotoUrl),
                                   /*: FileImage(ProfilePage._image!)
                                     as ImageProvider,*/
                                   backgroundColor: Colors.transparent,
@@ -184,21 +295,31 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ),
                                             InkWell(
                                               onTap: () async {
-                                                //ProfilePage.camera = true;
-                                                File? file =
-                                                    await getPhoto(true);
-                                                ProfilePage._image = file;
+                                                imgFromCamera();
+                                                updateUrl();
+
                                                 setState(() {});
+                                                Navigator.pop(context);
+                                                /*
+                                                //ProfilePage.camera = true;
+                                                
+                                                setState(() {});
+                                                */
                                               },
                                               child: ListTile(
                                                 leading:
-                                                    Icon(Icons.camera_enhance),
+                                                    Icon(Icons.photo_camera),
                                                 title: Text("Take photos"),
                                               ),
                                             ),
                                             InkWell(
                                               onTap: () async {
                                                 // ProfilePage.file = true;
+                                                imgFromGallery();
+                                                updateUrl();
+                                                setState(() {});
+                                                Navigator.pop(context);
+                                                /*
                                                 var path;
                                                 var fileName;
                                                 final results = FilePicker
@@ -227,14 +348,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 );
 
                                                 await getImageUrl(uid);
+                                              */
 
                                                 // ÇALIŞIYOR
                                                 /*
-                                                File? file =
-                                                    await getPhoto(false);
-                                                ProfilePage._image = file;
+                                                
                                                 */
-                                                setState(() {});
                                               },
                                               child: ListTile(
                                                 title: Text("Choose photo"),
@@ -243,7 +362,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ),
                                             InkWell(
                                               onTap: () async {
-                                                ProfilePage._image = null;
+                                                await FirebaseFirestore.instance
+                                                    .collection('Users')
+                                                    .doc(Userr.sUid)
+                                                    .update({'image': ""});
+
+                                                updateUrl();
+
                                                 setState(() {});
                                               },
                                               child: ListTile(

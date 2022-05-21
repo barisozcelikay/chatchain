@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class Userr {
   const Userr({
     required this.uid,
@@ -21,4 +23,5 @@ class Userr {
   static String sdate_of_birth = "";
   static String sphotoUrl = "";
   static String semail = "";
+  static late Future<File> static_image;
 }

@@ -40,7 +40,9 @@ class CustomBottomNavBar extends StatelessWidget {
                 ? CircleAvatar(
                     radius: 15.0,
                     backgroundImage: NetworkImage(Userr.sphotoUrl),
-                    /*: FileImage(ProfilePage._image!)
+                    /*:
+ FadeInImage(image: NetworkImage(Userr.sphotoUrl), placeholder: AssetImage(assetName)                    
+                     FileImage(ProfilePage._image!)
                                     as ImageProvider,*/
                   )
                 : CircleAvatar(

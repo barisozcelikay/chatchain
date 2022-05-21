@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:chatchain/Classes/userr.dart';
 import 'package:chatchain/Screens/home_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/animation/fadeAnimation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class LoginPage extends StatefulWidget {
   static String id = "login_page";
@@ -18,6 +23,18 @@ class _LoginPageState extends State<LoginPage> {
   late String password;
 
   final FirebaseAuthService _auth = FirebaseAuthService();
+
+  Future<File> _fileFromImageUrl(String url) async {
+    final response = await http.get(Uri.parse(url));
+
+    final documentDirectory = await getApplicationDocumentsDirectory();
+
+    final file = File(join(documentDirectory.path, 'imagetest.png'));
+
+    file.writeAsBytesSync(response.bodyBytes);
+
+    return file;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +129,10 @@ class _LoginPageState extends State<LoginPage> {
                                 Userr.sname = user.name;
                                 Userr.sphotoUrl = user.photoUrl;
                                 Userr.ssurname = user.surname;
+                                var a = _fileFromImageUrl(user.photoUrl)
+                                    as Future<File>;
 
+                                Userr.static_image = a;
                                 Navigator.pushNamedAndRemoveUntil(
                                     context, HomePage.id, (route) => false);
                               }
