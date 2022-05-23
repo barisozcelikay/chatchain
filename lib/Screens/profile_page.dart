@@ -167,6 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
         uid = user.uid;
         photo_url = user.photoUrl;
       });
+      // Signinden sonra bilgiler gelmiyor
     }
     if (Userr.sphotoUrl != photo_url) {
       Userr.sphotoUrl = photo_url;
