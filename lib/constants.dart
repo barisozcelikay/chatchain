@@ -25,3 +25,6 @@ const kSendButtonTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 18.0,
 );
+
+const kappDarkenColor = Color(0xFF1D1D35);
+const kappLightDarkenColor = Color.fromARGB(255, 102, 102, 147);

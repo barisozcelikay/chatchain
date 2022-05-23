@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables
 
 import 'package:chatchain/Screens/login_page.dart';
 import 'package:chatchain/Screens/signup_page.dart';
 import 'package:chatchain/animation/fadeAnimation.dart';
+import 'package:chatchain/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,8 @@ class _WelcomePageState extends State<WelcomePage> {
 
   bool isLogedOut = false;
 
+  bool changeLoginColor = false;
+
   @override
   void initState() {
     isLogedOut = widget.isLogedOut;
@@ -38,7 +41,7 @@ class _WelcomePageState extends State<WelcomePage> {
   void showSnackBar(bool isLogedOut, bool isDeletedAccount) {
     final snackBar = SnackBar(
       duration: Duration(seconds: 5),
-      backgroundColor: Colors.white,
+      backgroundColor: kappLightDarkenColor,
       behavior: SnackBarBehavior.fixed,
       content: Container(
           child: Column(
@@ -71,88 +74,144 @@ class _WelcomePageState extends State<WelcomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  FadeAnimation(
-                      1,
-                      Text(
-                        "Welcome to Chat Chain",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 30),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FadeAnimation(
-                      1.2,
-                      Text(
-                        "Automatic identity verification which enables you to verify your identity",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey[700], fontSize: 15),
-                      )),
-                ],
+              Expanded(
+                flex: 3,
+                child: FadeAnimation(
+                    2,
+                    Container(
+                      height: MediaQuery.of(context).size.height / 3,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/c.png'))),
+                    )),
               ),
-              FadeAnimation(
-                  1.4,
-                  Container(
-                    height: MediaQuery.of(context).size.height / 3,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image:
-                                AssetImage('assets/images/chatchainlogo.png'))),
-                  )),
-              Column(
-                children: <Widget>[
-                  FadeAnimation(
-                      1.5,
-                      MaterialButton(
-                        minWidth: double.infinity,
-                        height: 60,
-                        onPressed: () {
-                          Navigator.pushNamed(context, LoginPage.id);
-                        },
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 18),
-                        ),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FadeAnimation(
-                      1.6,
-                      Container(
-                        padding: EdgeInsets.only(top: 3, left: 3),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            border: Border(
-                              bottom: BorderSide(color: Colors.black),
-                              top: BorderSide(color: Colors.black),
-                              left: BorderSide(color: Colors.black),
-                              right: BorderSide(color: Colors.black),
-                            )),
-                        child: MaterialButton(
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: <Widget>[
+                    /* FadeAnimation(
+                        2,
+                        MaterialButton(
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            Navigator.pushNamed(context, SignUpPage.id);
+                            Navigator.pushNamed(context, LoginPage.id);
                           },
-                          color: Colors.yellow,
-                          elevation: 0,
                           shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.black),
                               borderRadius: BorderRadius.circular(50)),
                           child: Text(
-                            "Sign up",
+                            "Login",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 18),
                           ),
-                        ),
-                      ))
-                ],
+                        )), */
+                    FadeAnimation(
+                      3,
+                      Container(
+                        width: double.infinity,
+                        height: 60,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                shape:
+                                    MaterialStateProperty.all<OutlinedBorder>(
+                                        RoundedRectangleBorder(
+                                            side:
+                                                BorderSide(color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(50))),
+                                overlayColor: MaterialStateProperty.all<Color>(
+                                    Color.fromARGB(255, 102, 102, 147)),
+                                shadowColor: MaterialStateProperty.all<Color>(
+                                    Colors.white),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color(0xFF1D1D35))),
+                            onPressed: () {
+                              Navigator.pushNamed(context, LoginPage.id);
+                            },
+                            child: Text(
+                              "Login",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    FadeAnimation(
+                      3.5,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Don't have an account  ",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          InkWell(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () {
+                              Navigator.pushNamed(context, SignUpPage.id);
+                            },
+                            child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    /*RichText(
+                      text: TextSpan(
+                        text: 'Don\'t you have an account ',
+                        style: TextStyle(fontSize: 15),
+                        children: const <TextSpan>[
+                          TextSpan(
+                              text: 'Sign In',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  decoration: TextDecoration.underline)),
+                        ],
+                      ),
+                    ),
+*/
+                    /*    FadeAnimation(
+                        1.6,
+                        Container(
+                          padding: EdgeInsets.only(top: 3, left: 3),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border(
+                                bottom: BorderSide(color: Colors.black),
+                                top: BorderSide(color: Colors.black),
+                                left: BorderSide(color: Colors.black),
+                                right: BorderSide(color: Colors.black),
+                              )),
+                          child: MaterialButton(
+                            minWidth: double.infinity,
+                            height: 60,
+                            onPressed: () {
+                              Navigator.pushNamed(context, SignUpPage.id);
+                            },
+                            color: Colors.yellow,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Text(
+                              "Sign up",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 18),
+                            ),
+                          ),
+                        )) */
+                  ],
+                ),
               )
             ],
           ),

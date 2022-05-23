@@ -4,6 +4,7 @@ import 'package:chatchain/Classes/userr.dart';
 import 'package:chatchain/Screens/friend_info_page.dart';
 import 'package:chatchain/Screens/qrCodeScanner_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
+import 'package:chatchain/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -54,6 +55,8 @@ class _AddFriendPageState extends State<AddFriendPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: kappLightDarkenColor,
+        toolbarHeight: 75,
         title: Text("Add Friend"),
       ),
       body: Center(
@@ -73,7 +76,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
                     child: Container(
                       height: 80.0,
                       width: 80.0,
-                      color: Color.fromARGB(255, 222, 0, 0),
+                      color: kappLightDarkenColor,
                       child:
                           Icon(Icons.qr_code, color: Colors.white, size: 50.0),
                     ),
@@ -211,7 +214,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
                     child: Container(
                       height: 80.0,
                       width: 80.0,
-                      color: Color.fromARGB(255, 222, 0, 0),
+                      color: kappLightDarkenColor,
                       child: Icon(Icons.numbers_sharp,
                           color: Colors.white, size: 50.0),
                     ),

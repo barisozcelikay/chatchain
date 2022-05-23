@@ -15,9 +15,9 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationBarTheme(
-      data: NavigationBarThemeData(indicatorColor: Colors.white),
+      data: NavigationBarThemeData(indicatorColor: Colors.transparent),
       child: NavigationBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 102, 102, 147),
         height: 70,
         animationDuration: Duration(seconds: 1),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,

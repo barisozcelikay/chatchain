@@ -106,10 +106,11 @@ class _MessagesPageState extends State<MessagesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        toolbarHeight: 75,
+        automaticallyImplyLeading: true,
+        backgroundColor: kappLightDarkenColor,
         title: Row(
           children: [
-            BackButton(),
             InkWell(
               onTap: () {
                 showAlertDialog(context);
@@ -117,6 +118,7 @@ class _MessagesPageState extends State<MessagesPage> {
               child: Hero(
                 tag: "pp",
                 child: CircleAvatar(
+                  radius: 20,
                   backgroundImage: NetworkImage(
                       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
                 ),
@@ -130,10 +132,6 @@ class _MessagesPageState extends State<MessagesPage> {
                   name + " " + surname,
                   style: TextStyle(fontSize: 16),
                 ),
-                Text(
-                  "Active 3m ago",
-                  style: TextStyle(fontSize: 12),
-                )
               ],
             )
           ],
@@ -183,7 +181,7 @@ class _MessagesPageState extends State<MessagesPage> {
           Expanded(
             child: Container(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -203,7 +201,7 @@ class _MessagesPageState extends State<MessagesPage> {
               vertical: kDefaultPadding / 2,
             ),
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
+              color: kappLightDarkenColor,
               boxShadow: [
                 BoxShadow(
                   offset: Offset(0, 4),
@@ -215,20 +213,20 @@ class _MessagesPageState extends State<MessagesPage> {
             child: SafeArea(
               child: Row(
                 children: [
-                  Icon(Icons.mic, color: kPrimaryColor),
-                  SizedBox(width: kDefaultPadding),
+                  //Icon(Icons.mic, color: kPrimaryColor),
+                  //SizedBox(width: kDefaultPadding),
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: kDefaultPadding * 0.75,
                       ),
                       decoration: BoxDecoration(
-                        color: kPrimaryColor.withOpacity(0.05),
+                        color: kappDarkenColor,
                         borderRadius: BorderRadius.circular(40),
                       ),
                       child: Row(
                         children: [
-                          Icon(
+                          /*Icon(
                             Icons.sentiment_satisfied_alt_outlined,
                             color: Theme.of(context)
                                 .textTheme
@@ -236,6 +234,7 @@ class _MessagesPageState extends State<MessagesPage> {
                                 .color!
                                 .withOpacity(0.64),
                           ),
+                          */
                           SizedBox(width: kDefaultPadding / 4),
                           Expanded(
                             child: TextField(
@@ -256,7 +255,7 @@ class _MessagesPageState extends State<MessagesPage> {
                               ),
                             ),
                           ),
-                          if (sendButton != true)
+                          /*  if (sendButton != true)
                             Icon(
                               Icons.attach_file,
                               color: Theme.of(context)
@@ -276,95 +275,96 @@ class _MessagesPageState extends State<MessagesPage> {
                                   .color!
                                   .withOpacity(0.64),
                             ),
-                          if (sendButton == true)
-                            InkWell(
-                              onTap: () {
-                                final now = DateTime.now();
-                                var year = now.year;
-                                var month = now.month;
-                                var day = now.day;
-                                var hour = now.hour;
-                                var minute = now.minute;
-                                var second = now.second;
+                            */
 
-                                //Implement send functionality.
-                                // UPDATE MESSAGES
-                                print(messageText);
-                                _firestore
-                                    .collection("Users")
-                                    .doc(widget.user_uid)
-                                    .collection("Friends")
-                                    .doc(widget.friend_uid)
-                                    .collection("Messages")
-                                    .add({
-                                  'text': messageText,
-                                  'sender': widget.username +
-                                      " " +
-                                      widget.usersurname,
-                                  'sender_uid': widget.user_uid,
-                                  'timestamp':
-                                      Timestamp.fromDate(DateTime.now())
-                                });
+                          InkWell(
+                            onTap: (sendButton == true)
+                                ? () {
+                                    final now = DateTime.now();
+                                    var year = now.year;
+                                    var month = now.month;
+                                    var day = now.day;
+                                    var hour = now.hour;
+                                    var minute = now.minute;
+                                    var second = now.second;
 
-                                _firestore
-                                    .collection("Users")
-                                    .doc(widget.friend_uid)
-                                    .collection("Friends")
-                                    .doc(widget.user_uid)
-                                    .collection("Messages")
-                                    .add({
-                                  'text': messageText,
-                                  'sender': widget.username +
-                                      " " +
-                                      widget.usersurname,
-                                  'sender_uid': widget.user_uid,
-                                  'timestamp':
-                                      Timestamp.fromDate(DateTime.now())
-                                });
+                                    //Implement send functionality.
+                                    // UPDATE MESSAGES
+                                    print(messageText);
+                                    _firestore
+                                        .collection("Users")
+                                        .doc(widget.user_uid)
+                                        .collection("Friends")
+                                        .doc(widget.friend_uid)
+                                        .collection("Messages")
+                                        .add({
+                                      'text': messageText,
+                                      'sender': widget.username +
+                                          " " +
+                                          widget.usersurname,
+                                      'sender_uid': widget.user_uid,
+                                      'timestamp':
+                                          Timestamp.fromDate(DateTime.now())
+                                    });
 
-                                // UPDATE CHAT CARD
+                                    _firestore
+                                        .collection("Users")
+                                        .doc(widget.friend_uid)
+                                        .collection("Friends")
+                                        .doc(widget.user_uid)
+                                        .collection("Messages")
+                                        .add({
+                                      'text': messageText,
+                                      'sender': widget.username +
+                                          " " +
+                                          widget.usersurname,
+                                      'sender_uid': widget.user_uid,
+                                      'timestamp':
+                                          Timestamp.fromDate(DateTime.now())
+                                    });
 
-                                _firestore
-                                    .collection("Users")
-                                    .doc(widget.user_uid)
-                                    .collection("Friends")
-                                    .doc(widget.friend_uid)
-                                    .update({
-                                  'last_message': messageText,
-                                  'last_time':
-                                      Timestamp.fromDate(DateTime.now()),
-                                  'last_message_uid': widget.user_uid,
-                                  'readed': true
-                                });
+                                    // UPDATE CHAT CARD
 
-                                _firestore
-                                    .collection("Users")
-                                    .doc(widget.friend_uid)
-                                    .collection("Friends")
-                                    .doc(widget.user_uid)
-                                    .update({
-                                  'last_message': messageText,
-                                  'last_time':
-                                      Timestamp.fromDate(DateTime.now()),
-                                  'last_message_uid': widget.user_uid,
-                                  'readed': false
-                                });
+                                    _firestore
+                                        .collection("Users")
+                                        .doc(widget.user_uid)
+                                        .collection("Friends")
+                                        .doc(widget.friend_uid)
+                                        .update({
+                                      'last_message': messageText,
+                                      'last_time':
+                                          Timestamp.fromDate(DateTime.now()),
+                                      'last_message_uid': widget.user_uid,
+                                      'readed': true
+                                    });
 
-                                messageTextController.clear();
-                                setState(() {
-                                  messageText = "";
-                                  sendButton = false;
-                                });
-                              },
-                              child: Icon(
-                                Icons.send,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color!
-                                    .withOpacity(0.64),
-                              ),
+                                    _firestore
+                                        .collection("Users")
+                                        .doc(widget.friend_uid)
+                                        .collection("Friends")
+                                        .doc(widget.user_uid)
+                                        .update({
+                                      'last_message': messageText,
+                                      'last_time':
+                                          Timestamp.fromDate(DateTime.now()),
+                                      'last_message_uid': widget.user_uid,
+                                      'readed': false
+                                    });
+
+                                    messageTextController.clear();
+                                    setState(() {
+                                      messageText = "";
+                                      sendButton = false;
+                                    });
+                                  }
+                                : null,
+                            child: Icon(
+                              Icons.send,
+                              color: sendButton == true
+                                  ? Colors.white
+                                  : Colors.grey.withOpacity(0.1),
                             ),
+                          ),
                         ],
                       ),
                     ),

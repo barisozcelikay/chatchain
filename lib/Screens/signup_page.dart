@@ -17,6 +17,7 @@ import 'package:firebase_core/firebase_core.dart' as firebase_core;
 
 import '../Classes/userr.dart';
 import '../animation/fadeAnimation.dart';
+import '../constants.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -311,77 +312,80 @@ class _SignUpPageState extends State<SignUpPage> {
                     showModalBottomSheet(
                         context: context,
                         builder: (BuildContext context) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                InkWell(
-                                  onTap: () async {
-                                    //ProfilePage.camera = true;
-                                    File? file = await getPhoto(true);
-                                    setState(() {
-                                      _image = file;
-                                    });
-
-                                    setState(() {});
-                                  },
-                                  child: ListTile(
-                                    leading: Text("Take photos"),
-                                    trailing: Icon(Icons.camera_enhance),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () async {
-                                    // ProfilePage.file = true;
-
-                                    final results = FilePicker.platform
-                                        .pickFiles(
-                                            allowMultiple: false,
-                                            type: FileType.custom,
-                                            allowedExtensions: [
-                                          'png',
-                                          'jpg'
-                                        ]).then((value) {
+                          return Container(
+                            color: kappLightDarkenColor,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  InkWell(
+                                    onTap: () async {
+                                      //ProfilePage.camera = true;
+                                      File? file = await getPhoto(true);
                                       setState(() {
-                                        path = value?.files.single.path;
-                                        fileName = value?.files.single.name;
+                                        _image = file;
                                       });
-                                    });
 
-                                    File? file = await getPhoto(false);
-                                    setState(() {
-                                      _image = file;
-                                    });
-
-                                    setState(() {});
-                                  },
-                                  child: ListTile(
-                                    leading: Text("Choose photo"),
-                                    trailing: Icon(Icons.folder),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () async {
-                                    setState(() {
-                                      _image = null;
-                                    });
-
-                                    setState(() {});
-                                  },
-                                  child: ListTile(
-                                    leading: Text(
-                                      "Remove photo",
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    trailing: Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
+                                      setState(() {});
+                                    },
+                                    child: ListTile(
+                                      leading: Text("Take photos"),
+                                      trailing: Icon(Icons.camera_enhance),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  InkWell(
+                                    onTap: () async {
+                                      // ProfilePage.file = true;
+
+                                      final results = FilePicker.platform
+                                          .pickFiles(
+                                              allowMultiple: false,
+                                              type: FileType.custom,
+                                              allowedExtensions: [
+                                            'png',
+                                            'jpg'
+                                          ]).then((value) {
+                                        setState(() {
+                                          path = value?.files.single.path;
+                                          fileName = value?.files.single.name;
+                                        });
+                                      });
+
+                                      File? file = await getPhoto(false);
+                                      setState(() {
+                                        _image = file;
+                                      });
+
+                                      setState(() {});
+                                    },
+                                    child: ListTile(
+                                      leading: Text("Choose photo"),
+                                      trailing: Icon(Icons.folder),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      setState(() {
+                                        _image = null;
+                                      });
+
+                                      setState(() {});
+                                    },
+                                    child: ListTile(
+                                      leading: Text(
+                                        "Remove photo",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      trailing: Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         });
@@ -732,7 +736,7 @@ class _SignUpPageState extends State<SignUpPage> {
           icon: Icon(
             Icons.arrow_back_ios,
             size: 20,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
       ),

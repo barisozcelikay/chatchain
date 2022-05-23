@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:chatchain/constants.dart';
 import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
@@ -19,8 +22,11 @@ class MessageBubble extends StatelessWidget {
             sender,
             style: TextStyle(
                 fontSize: 12.0,
-                color: Colors.black54,
-                fontWeight: FontWeight.w400),
+                color: Colors.white,
+                fontWeight: FontWeight.w500),
+          ),
+          SizedBox(
+            height: 2,
           ),
           Material(
             borderRadius: isMe
@@ -33,7 +39,7 @@ class MessageBubble extends StatelessWidget {
                     bottomLeft: Radius.circular(30.0),
                     bottomRight: Radius.circular(30.0)),
             elevation: 10.0,
-            color: isMe ? Colors.lightBlueAccent : Colors.white54,
+            color: isMe ? kappLightDarkenColor : Colors.white60,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               child: Text(
@@ -45,12 +51,15 @@ class MessageBubble extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(
+            height: 2,
+          ),
           Text(
             time,
             style: TextStyle(
                 fontSize: 12.0,
-                color: Colors.black54,
-                fontWeight: FontWeight.w400),
+                color: Colors.white,
+                fontWeight: FontWeight.w500),
           ),
         ],
       ),

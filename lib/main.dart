@@ -31,7 +31,7 @@ class ChatChain extends StatelessWidget {
     return MaterialApp(
       title: 'Chat Chain',
       debugShowCheckedModeBanner: false,
-      theme: lightThemeData(context),
+      theme: darkThemeData(context),
       darkTheme: darkThemeData(context),
       home: WelcomePage(false, false),
       routes: {

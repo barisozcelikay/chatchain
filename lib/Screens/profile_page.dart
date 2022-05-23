@@ -4,6 +4,7 @@ import 'package:chatchain/Classes/userr.dart';
 import 'package:chatchain/Screens/profile_qr_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/Services/storage.dart';
+import 'package:chatchain/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -254,7 +255,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        color: Colors.white,
+                        padding: EdgeInsets.only(top: 30),
                         alignment: Alignment.center,
                         child: Stack(children: [
                           // ignore: unnecessary_null_compxarison
@@ -269,7 +270,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 )
                               : CircleAvatar(
                                   radius: 100.0,
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: kappLightDarkenColor,
                                   backgroundImage: AssetImage(
                                       'assets/images/no-profile.png'),
                                 ),
@@ -283,113 +284,117 @@ class _ProfilePageState extends State<ProfilePage> {
                                 showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 10),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            ListTile(
-                                              leading:
-                                                  Text("Photo Select Method"),
-                                            ),
-                                            InkWell(
-                                              onTap: () async {
-                                                imgFromCamera();
-                                                updateUrl();
-
-                                                setState(() {});
-                                                Navigator.pop(context);
-                                                /*
-                                                //ProfilePage.camera = true;
-                                                
-                                                setState(() {});
-                                                */
-                                              },
-                                              child: ListTile(
+                                      return Container(
+                                        color: kappLightDarkenColor,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              ListTile(
                                                 leading:
-                                                    Icon(Icons.photo_camera),
-                                                title: Text("Take photos"),
+                                                    Text("Photo Select Method"),
                                               ),
-                                            ),
-                                            InkWell(
-                                              onTap: () async {
-                                                // ProfilePage.file = true;
-                                                imgFromGallery();
-                                                updateUrl();
-                                                setState(() {});
-                                                Navigator.pop(context);
-                                                /*
-                                                var path;
-                                                var fileName;
-                                                final results = FilePicker
-                                                    .platform
-                                                    .pickFiles(
-                                                        allowMultiple: false,
-                                                        type: FileType.custom,
-                                                        allowedExtensions: [
-                                                      'png',
-                                                      'jpg'
-                                                    ]).then(
-                                                  (value) {
-                                                    setState(() {
-                                                      path = value
-                                                          ?.files.single.path;
-                                                      fileName = value
-                                                          ?.files.single.name;
-                                                    });
+                                              InkWell(
+                                                onTap: () async {
+                                                  imgFromCamera();
+                                                  updateUrl();
 
-                                                    uploadFile(path, fileName)
-                                                        .then((value) =>
-                                                            print("Done"));
-
-                                                    setState(() {});
-                                                  },
-                                                );
-
-                                                await getImageUrl(uid);
-                                              */
-
-                                                // ÇALIŞIYOR
-                                                /*
-                                                
+                                                  setState(() {});
+                                                  Navigator.pop(context);
+                                                  /*
+                                                  //ProfilePage.camera = true;
+                                                  
+                                                  setState(() {});
+                                                  */
+                                                },
+                                                child: ListTile(
+                                                  leading:
+                                                      Icon(Icons.photo_camera),
+                                                  title: Text("Take photos"),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () async {
+                                                  // ProfilePage.file = true;
+                                                  imgFromGallery();
+                                                  updateUrl();
+                                                  setState(() {});
+                                                  Navigator.pop(context);
+                                                  /*
+                                                  var path;
+                                                  var fileName;
+                                                  final results = FilePicker
+                                                      .platform
+                                                      .pickFiles(
+                                                          allowMultiple: false,
+                                                          type: FileType.custom,
+                                                          allowedExtensions: [
+                                                        'png',
+                                                        'jpg'
+                                                      ]).then(
+                                                    (value) {
+                                                      setState(() {
+                                                        path = value
+                                                            ?.files.single.path;
+                                                        fileName = value
+                                                            ?.files.single.name;
+                                                      });
+                                          
+                                                      uploadFile(path, fileName)
+                                                          .then((value) =>
+                                                              print("Done"));
+                                          
+                                                      setState(() {});
+                                                    },
+                                                  );
+                                          
+                                                  await getImageUrl(uid);
                                                 */
-                                              },
-                                              child: ListTile(
-                                                title: Text("Choose photo"),
-                                                leading: Icon(Icons.folder),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () async {
-                                                await FirebaseFirestore.instance
-                                                    .collection('Users')
-                                                    .doc(Userr.sUid)
-                                                    .update({'image': ""});
 
-                                                updateUrl();
-
-                                                setState(() {});
-                                              },
-                                              child: ListTile(
-                                                leading: Icon(
-                                                  Icons.delete,
-                                                  color: Colors.red,
-                                                ),
-                                                title: Text(
-                                                  "Remove photo",
-                                                  style: TextStyle(
-                                                      color: Colors.red),
+                                                  // ÇALIŞIYOR
+                                                  /*
+                                                  
+                                                  */
+                                                },
+                                                child: ListTile(
+                                                  title: Text("Choose photo"),
+                                                  leading: Icon(Icons.folder),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              InkWell(
+                                                onTap: () async {
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('Users')
+                                                      .doc(Userr.sUid)
+                                                      .update({'image': ""});
+
+                                                  updateUrl();
+
+                                                  setState(() {});
+                                                },
+                                                child: ListTile(
+                                                  leading: Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                  ),
+                                                  title: Text(
+                                                    "Remove photo",
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       );
                                     });
                               },
                               child: CircleAvatar(
-                                backgroundColor: Colors.red,
+                                backgroundColor: kappLightDarkenColor,
                                 foregroundColor: Colors.white,
                                 child: Icon(Icons.edit),
                               ),
@@ -409,15 +414,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(
                         height: 15,
                       ),
+                      /*
                       Center(
                         child: InkWell(
                           onTap: () =>
                               Navigator.pushNamed(context, ProfileQrPage.id),
                           child: Container(
-                            constraints: BoxConstraints(
-                              minWidth: 30,
-                              maxWidth: 120,
-                            ),
+                            width: ,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(border: Border.all()),
                             padding: EdgeInsets.all(10),
@@ -430,6 +433,46 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
+*/
+                      Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                shape:
+                                    MaterialStateProperty.all<OutlinedBorder>(
+                                        RoundedRectangleBorder(
+                                            side:
+                                                BorderSide(color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(10))),
+                                overlayColor: MaterialStateProperty.all<Color>(
+                                    Color.fromARGB(255, 102, 102, 147)),
+                                shadowColor: MaterialStateProperty.all<Color>(
+                                    Colors.white),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color(0xFF1D1D35))),
+                            onPressed: () {
+                              Navigator.pushNamed(context, ProfileQrPage.id);
+                            },
+                            child:
+                                Row(mainAxisSize: MainAxisSize.min, children: [
+                              Text(
+                                "Show Qr",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.qr_code,
+                                size: 20,
+                                color: Colors.white,
+                              )
+                            ]),
+                          )),
                       ListTile(
                         leading: Icon(Icons.people),
                         title: Text("User Informations"),

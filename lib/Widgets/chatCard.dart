@@ -33,7 +33,13 @@ class ChatCard extends StatelessWidget {
     return InkWell(
       onTap: press,
       child: Container(
-        color: readed != true ? Colors.redAccent : Colors.white,
+        decoration: BoxDecoration(
+          /*borderRadius: BorderRadius.only(
+              topRight: Radius.circular(10), bottomRight: Radius.circular(10))*/
+          color: readed == false
+              ? kappLightDarkenColor.withOpacity(0.6)
+              : kappDarkenColor,
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: kDefaultPadding, vertical: kDefaultPadding * 0.75),
@@ -42,7 +48,7 @@ class ChatCard extends StatelessWidget {
               Stack(
                 children: [
                   CircleAvatar(
-                    radius: 24,
+                    radius: 26,
                     backgroundImage: NetworkImage(
                         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
                   ),
@@ -54,11 +60,9 @@ class ChatCard extends StatelessWidget {
                         height: 16,
                         width: 16,
                         decoration: BoxDecoration(
-                          color: kPrimaryColor,
+                          color: kappDarkenColor,
                           shape: BoxShape.circle,
-                          border: Border.all(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              width: 3),
+                          border: Border.all(color: Colors.white, width: 4),
                         ),
                       ),
                     )
@@ -93,7 +97,10 @@ class ChatCard extends StatelessWidget {
               ),
               Opacity(
                 opacity: 0.64,
-                child: Text(last_time),
+                child: Text(
+                  last_time,
+                  textAlign: TextAlign.end,
+                ),
               ),
             ],
           ),

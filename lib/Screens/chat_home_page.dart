@@ -4,6 +4,7 @@ import 'package:chatchain/Classes/userr.dart';
 import 'package:chatchain/Screens/messages_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/Widgets/chatCard.dart';
+import 'package:chatchain/animation/fadeAnimation.dart';
 import 'package:chatchain/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -69,25 +70,29 @@ class _ChatHomePageState extends State<ChatHomePage> {
 
               print(last_time);
 
-              return Expanded(
-                child: ChatCard(
-                  name: name,
-                  surname: surname,
-                  last_message: last_message,
-                  last_time: last_time_string,
-                  last_uid: last_uid,
-                  user_uid: FirebaseAuth.instance.currentUser!.uid,
-                  readed: readed,
-                  press: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MessagesPage(
-                              name: name,
-                              surname: surname,
-                              friend_uid: uid,
-                              user_uid: FirebaseAuth.instance.currentUser!.uid,
-                              username: Userr.sname,
-                              usersurname: Userr.ssurname))),
+              return FadeAnimation(
+                0.5 * index,
+                Expanded(
+                  child: ChatCard(
+                    name: name,
+                    surname: surname,
+                    last_message: last_message,
+                    last_time: last_time_string,
+                    last_uid: last_uid,
+                    user_uid: FirebaseAuth.instance.currentUser!.uid,
+                    readed: readed,
+                    press: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MessagesPage(
+                                name: name,
+                                surname: surname,
+                                friend_uid: uid,
+                                user_uid:
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                username: Userr.sname,
+                                usersurname: Userr.ssurname))),
+                  ),
                 ),
               );
             });

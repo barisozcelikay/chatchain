@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:chatchain/Services/firebase_auth_service.dart';
+import 'package:chatchain/animation/fadeAnimation.dart';
+import 'package:chatchain/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +22,7 @@ class _ProfileQrPageState extends State<ProfileQrPage> {
   void showSnackBar(String hashValue) {
     final snackBar = SnackBar(
       duration: Duration(seconds: 5),
-      backgroundColor: Colors.white,
+      backgroundColor: kappLightDarkenColor,
       behavior: SnackBarBehavior.fixed,
       content: Container(
           child: Column(
@@ -29,13 +31,13 @@ class _ProfileQrPageState extends State<ProfileQrPage> {
           Text(
             hashValue,
             style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15),
+                fontWeight: FontWeight.w300, color: Colors.white, fontSize: 18),
           ),
           SizedBox(
             height: 10,
           ),
           Text("Hash value is copied !",
-              style: TextStyle(color: Colors.black, fontSize: 12)),
+              style: TextStyle(color: Colors.white, fontSize: 15)),
         ],
       )),
     );
@@ -48,20 +50,25 @@ class _ProfileQrPageState extends State<ProfileQrPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
+        backgroundColor: kappLightDarkenColor,
         centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            color: Colors.white,
-            child: Center(
-              child: Container(
-                color: Colors.white,
-                child: QrImage(
-                  data: hashValue,
-                  version: QrVersions.auto,
-                  size: 250,
+          FadeAnimation(
+            1.2,
+            Container(
+              color: Colors.transparent,
+              child: Center(
+                child: Container(
+                  color: Colors.transparent,
+                  child: QrImage(
+                    foregroundColor: Colors.white,
+                    data: hashValue,
+                    version: QrVersions.auto,
+                    size: 250,
+                  ),
                 ),
               ),
             ),
@@ -69,33 +76,36 @@ class _ProfileQrPageState extends State<ProfileQrPage> {
           SizedBox(
             height: 30,
           ),
-          Column(
-            children: [
-              Text(
-                hashValue,
-                style: TextStyle(fontWeight: FontWeight.w100, fontSize: 15),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              InkWell(
-                  onTap: () {
-                    Clipboard.setData(ClipboardData(text: hashValue));
-                    setState(() {
-                      isCopied = true;
-                      showSnackBar(hashValue);
-                    });
-                  },
-                  child: !isCopied
-                      ? Icon(Icons.copy)
-                      : Text(
-                          "Copied",
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ))
-            ],
+          FadeAnimation(
+            1.2,
+            Column(
+              children: [
+                Text(
+                  hashValue,
+                  style: TextStyle(fontWeight: FontWeight.w100, fontSize: 15),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                InkWell(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: hashValue));
+                      setState(() {
+                        isCopied = true;
+                        showSnackBar(hashValue);
+                      });
+                    },
+                    child: !isCopied
+                        ? Icon(Icons.copy)
+                        : Text(
+                            "Copied",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ))
+              ],
+            ),
           )
         ],
       ),
