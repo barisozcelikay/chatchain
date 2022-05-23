@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:chatchain/Classes/userr.dart';
+import 'package:chatchain/Screens/addFriend_page.dart';
 import 'package:chatchain/Screens/messages_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
 import 'package:chatchain/Widgets/chatCard.dart';
@@ -37,65 +38,87 @@ class _ChatHomePageState extends State<ChatHomePage> {
         }
         print(FirebaseAuth.instance.currentUser?.uid.toString());
 
-        return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (BuildContext context, int index) {
-              final docData = snapshot.data!.docs[index];
-              /*final dateTime =
+        return snapshot.data!.docs.length != 0
+            ? ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final docData = snapshot.data!.docs[index];
+                  /*final dateTime =
                   (docData["timestamp"] as Timestamp).toDate(); */
-              var name = docData["name"];
-              var surname = docData["surname"];
-              var last_message = docData["last_message"];
-              Timestamp last_time = docData["last_time"];
-              var uid = docData["uid"];
+                  var name = docData["name"];
+                  var surname = docData["surname"];
+                  var last_message = docData["last_message"];
+                  Timestamp last_time = docData["last_time"];
+                  var uid = docData["uid"];
 
-              var last_uid = docData["last_message_uid"];
+                  var last_uid = docData["last_message_uid"];
 
-              var readed = docData["readed"];
+                  var readed = docData["readed"];
 
-              var day = last_time.toDate().day.toString();
-              day = day.length == 2 ? day : "0$day";
+                  var network_image = docData["network_image"];
 
-              var month = last_time.toDate().month.toString();
-              month = month.length == 2 ? month : "0$month";
+                  var day = last_time.toDate().day.toString();
+                  day = day.length == 2 ? day : "0$day";
 
-              var hour = last_time.toDate().hour.toString();
-              hour = hour.length == 2 ? hour : "0$hour";
+                  var month = last_time.toDate().month.toString();
+                  month = month.length == 2 ? month : "0$month";
 
-              var minute = last_time.toDate().minute.toString();
-              minute = minute.length == 2 ? minute : "0$minute";
+                  var hour = last_time.toDate().hour.toString();
+                  hour = hour.length == 2 ? hour : "0$hour";
 
-              String last_time_string =
-                  hour + ":" + minute + "\n" + day + "/" + month;
+                  var minute = last_time.toDate().minute.toString();
+                  minute = minute.length == 2 ? minute : "0$minute";
 
-              print(last_time);
+                  String last_time_string =
+                      hour + ":" + minute + "\n" + day + "/" + month;
 
-              return FadeAnimation(
-                0.5 * index,
-                Expanded(
-                  child: ChatCard(
-                    name: name,
-                    surname: surname,
-                    last_message: last_message,
-                    last_time: last_time_string,
-                    last_uid: last_uid,
-                    user_uid: FirebaseAuth.instance.currentUser!.uid,
-                    readed: readed,
-                    press: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MessagesPage(
-                                name: name,
-                                surname: surname,
-                                friend_uid: uid,
-                                user_uid:
-                                    FirebaseAuth.instance.currentUser!.uid,
-                                username: Userr.sname,
-                                usersurname: Userr.ssurname))),
+                  print(last_time);
+
+                  return FadeAnimation(
+                    0.5 * index,
+                    Expanded(
+                      child: ChatCard(
+                        name: name,
+                        surname: surname,
+                        last_message: last_message,
+                        last_time: last_time_string,
+                        last_uid: last_uid,
+                        user_uid: FirebaseAuth.instance.currentUser!.uid,
+                        readed: readed,
+                        network_image: network_image,
+                        press: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MessagesPage(
+                                      name: name,
+                                      surname: surname,
+                                      friend_uid: uid,
+                                      user_uid: FirebaseAuth
+                                          .instance.currentUser!.uid,
+                                      username: Userr.sname,
+                                      usersurname: Userr.ssurname,
+                                      network_image: network_image,
+                                    ))),
+                      ),
+                    ),
+                  );
+                })
+            : Center(
+                child: InkWell(
+                  onTap: () => Navigator.pushNamed(context, AddFriendPage.id),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Add Friends"),
+                      CircleAvatar(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.transparent,
+                          child: Icon(Icons.person_add))
+                    ],
                   ),
                 ),
               );
-            });
       },
     );
   }

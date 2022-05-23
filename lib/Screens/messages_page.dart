@@ -21,7 +21,8 @@ class MessagesPage extends StatefulWidget {
       required this.friend_uid,
       required this.user_uid,
       required this.username,
-      required this.usersurname})
+      required this.usersurname,
+      required this.network_image})
       : super(key: key);
   static String id = "messages_page";
   final String name;
@@ -30,6 +31,7 @@ class MessagesPage extends StatefulWidget {
   final String user_uid;
   final String username;
   final String usersurname;
+  final String network_image;
 
   static Color backgroundColor = Colors.white;
   static Decoration o = BoxDecoration(
@@ -71,23 +73,21 @@ class _MessagesPageState extends State<MessagesPage> {
   showAlertDialog(BuildContext context) {
     // Create AlertDialog
     AlertDialog alert = AlertDialog(
-      backgroundColor: Colors.transparent,
-      content: Container(
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
+        backgroundColor: Colors.transparent,
+        content: Container(
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ]),
+          child: Image(
+            fit: BoxFit.fitHeight,
+            image: NetworkImage(widget.network_image),
           ),
-        ]),
-        child: Image(
-          fit: BoxFit.fitHeight,
-          image: NetworkImage(
-              "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
-        ),
-      ),
-    );
+        ));
 
     // show the dialog
     showDialog(
@@ -119,8 +119,7 @@ class _MessagesPageState extends State<MessagesPage> {
                 tag: "pp",
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+                  backgroundImage: NetworkImage(widget.network_image),
                 ),
               ),
             ),

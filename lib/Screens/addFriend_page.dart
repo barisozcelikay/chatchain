@@ -106,6 +106,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
                                 StateSetter setState /*You can rename this!*/) {
                               return Container(
                                 padding: MediaQuery.of(context).viewInsets,
+                                color: kappDarkenColor,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 50.0, vertical: 30.0),
@@ -135,23 +136,24 @@ class _AddFriendPageState extends State<AddFriendPage> {
                                           ),
                                           prefixIcon: Icon(
                                             Icons.person,
-                                            color: Colors.red,
+                                            color: Colors.white,
                                             size: 18,
                                           ),
                                           enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                                color: Colors.grey.shade400,
+                                                color: kappLightDarkenColor,
                                                 width: 2),
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
                                           ),
                                           floatingLabelStyle: TextStyle(
-                                            color: Colors.red,
+                                            color: Colors.white,
                                             fontSize: 18.0,
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                                color: Colors.red, width: 1.5),
+                                                color: Colors.white,
+                                                width: 1.5),
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
                                           ),
@@ -171,6 +173,12 @@ class _AddFriendPageState extends State<AddFriendPage> {
                                         height: 20,
                                       ),
                                       ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor: isEnterValid
+                                                ? MaterialStateProperty.all<
+                                                    Color>(Colors.white)
+                                                : MaterialStateProperty.all<
+                                                    Color>(Colors.grey)),
                                         onPressed: isEnterValid
                                             ? () async {
                                                 var user =
@@ -192,13 +200,16 @@ class _AddFriendPageState extends State<AddFriendPage> {
                                                                   uid,
                                                                   user!.uid,
                                                                   user.name,
-                                                                  user.surname)));
+                                                                  user.surname,
+                                                                  user.photoUrl,
+                                                                  friend_user!
+                                                                      .photoUrl)));
                                                 }
                                               }
                                             : null,
                                         child: Text(
                                           'Enter',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: Colors.black),
                                         ),
                                       ),
                                     ],

@@ -5,18 +5,19 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
 class ChatCard extends StatelessWidget {
-  const ChatCard({
-    Key? key,
-    required this.name,
-    required this.surname,
-    required this.last_message,
-    required this.last_time,
-    //required this.chat,
-    required this.press,
-    required this.last_uid,
-    required this.user_uid,
-    required this.readed,
-  }) : super(key: key);
+  const ChatCard(
+      {Key? key,
+      required this.name,
+      required this.surname,
+      required this.last_message,
+      required this.last_time,
+      //required this.chat,
+      required this.press,
+      required this.last_uid,
+      required this.user_uid,
+      required this.readed,
+      required this.network_image})
+      : super(key: key);
 
   //final Chat chat;
   final VoidCallback press;
@@ -27,6 +28,7 @@ class ChatCard extends StatelessWidget {
   final String user_uid;
   final String last_uid;
   final bool readed;
+  final String network_image;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +51,7 @@ class ChatCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 26,
-                    backgroundImage: NetworkImage(
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/220px-Ataturk1930s.jpg"),
+                    backgroundImage: NetworkImage(network_image),
                   ),
                   if (readed != true)
                     Positioned(

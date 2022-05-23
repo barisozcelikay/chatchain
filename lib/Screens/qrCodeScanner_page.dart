@@ -121,8 +121,17 @@ class _QrCodeScannerPageState extends State<QrCodeScannerPage> {
               ],
             ),
           )
-        : FriendInfoPage(friend_user!.name, friend_user!.surname, "", "",
-            barcode!.code.toString(), user!.uid, user.name, user.surname);
+        : FriendInfoPage(
+            friend_user!.name,
+            friend_user!.surname,
+            "",
+            "",
+            barcode!.code.toString(),
+            user!.uid,
+            user.name,
+            user.surname,
+            user!.photUrl,
+            friend_user!.photoUrl);
   }
 
   Widget buildResult() {

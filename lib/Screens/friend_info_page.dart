@@ -13,7 +13,9 @@ class FriendInfoPage extends StatelessWidget {
       this.friendUid,
       this.userUid,
       this.userName,
-      this.userSurname);
+      this.userSurname,
+      this.user_network_image,
+      this.friend_network_image);
   final String friend_name;
   final String friend_surname;
   final String last_message;
@@ -22,6 +24,8 @@ class FriendInfoPage extends StatelessWidget {
   final String userUid;
   final String userName;
   final String userSurname;
+  final String user_network_image;
+  final String friend_network_image;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +48,7 @@ class FriendInfoPage extends StatelessWidget {
               alignment: Alignment.center,
               child: CircleAvatar(
                 radius: 100.0,
-                backgroundImage: NetworkImage(""),
+                backgroundImage: NetworkImage(friend_network_image),
               ),
             ),
             SizedBox(
@@ -80,7 +84,8 @@ class FriendInfoPage extends StatelessWidget {
                     'last_message': "",
                     'last_time': Timestamp.fromDate(DateTime.now()),
                     'last_message_uid': userUid,
-                    'readed': true
+                    'readed': true,
+                    'network_image': friend_network_image
                   });
 
                   await FirebaseFirestore.instance
@@ -95,7 +100,8 @@ class FriendInfoPage extends StatelessWidget {
                     'last_message': "",
                     'last_time': Timestamp.fromDate(DateTime.now()),
                     'last_message_uid': userUid,
-                    'readed': true
+                    'readed': false,
+                    'network_image': user_network_image
                   });
 
                   print("Arkadaş oldular");

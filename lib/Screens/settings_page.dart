@@ -3,8 +3,11 @@
 import 'package:chatchain/Screens/aboutUs_page.dart';
 import 'package:chatchain/Screens/welcome_page.dart';
 import 'package:chatchain/Services/firebase_auth_service.dart';
+import 'package:chatchain/constants.dart';
 import 'package:chatchain/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,6 +23,24 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future _launchUrl() async {
     if (!await launchUrl(_url)) throw 'Could not launch $_url';
+  }
+
+  Future getImageUrl(String uid) async {
+    DocumentSnapshot variable =
+        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+
+    var imageName = variable['image'];
+    print(imageName);
+
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('Users')
+        .child(uid)
+        .child(imageName);
+
+    var new_url = await ref.getDownloadURL();
+
+    return new_url;
   }
 
   @override
@@ -100,8 +121,28 @@ showAlertDialog(BuildContext context) {
       "Delete Account",
       style: TextStyle(color: Colors.white),
     ),
-    onPressed: () {
-      FirebaseAuthService().deleteUser();
+    onPressed: () async {
+      var uid = FirebaseAuth.instance.currentUser!.uid;
+      print(uid);
+
+      DocumentSnapshot variable =
+          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+
+      var imageName = variable['image'];
+      print(imageName);
+
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('Users')
+          .child(uid)
+          .child(imageName);
+
+      var new_url = await ref.getDownloadURL();
+
+      final old_ref = FirebaseStorage.instance.refFromURL(new_url);
+
+      await old_ref.delete();
+      await FirebaseAuthService().deleteUser();
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -113,6 +154,7 @@ showAlertDialog(BuildContext context) {
 
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
+    backgroundColor: kappLightDarkenColor,
     title: Text("Deleting Account"),
     content: Text("Are you sure to delete your account ?"),
     actions: [cancelButton, deleteButton],
