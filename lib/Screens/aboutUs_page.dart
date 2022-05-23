@@ -10,8 +10,8 @@ class AboutUsPage extends StatelessWidget {
   var students = [
     {'name': "Barış Özçelikay", 'photo': 'assets/images/baris.jpg'},
     {'name': "Kaan Yazgan", 'photo': 'assets/images/kaan.png'},
-    {'name': "Gökay Özsoy", 'photo': 'assets/images/c.png'},
-    {'name': "Onur Aladı", 'photo': 'assets/images/c.png'}
+    {'name': "Gökay Özsoy", 'photo': 'assets/images/gokay.jpeg'},
+    {'name': "Onur Aladı", 'photo': 'assets/images/onur.jpg'}
   ];
 
   @override

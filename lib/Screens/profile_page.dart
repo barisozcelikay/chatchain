@@ -96,6 +96,36 @@ class _ProfilePageState extends State<ProfilePage> {
           .collection('Users')
           .doc(Userr.sUid)
           .update({'image': fileName});
+
+      Userr? user = await FirebaseAuthService().getUserData();
+
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(Userr.sUid)
+          .update({'network_image': user!.photoUrl});
+
+      var collection = FirebaseFirestore.instance.collection('Users');
+      var querySnapshots = await collection.get();
+      for (var doc in querySnapshots.docs) {
+        var collection2 = doc.reference.collection("Friends");
+        var querySnapshots2 = await collection2.get();
+        for (var doc2 in querySnapshots2.docs) {
+          if (doc2.get("uid") == Userr.sUid) {
+            print("Amaniiin");
+            print(doc2.get("name"));
+            await doc2.reference.update({'network_image': user.photoUrl});
+            break;
+          }
+        }
+
+        /*
+        await doc.reference.collection("Friends").where("uid",isEqualTo: Userr.sUid).
+
+        update({
+          'single_field': 'newValue',
+        });
+        */
+      }
     } catch (e) {
       print('error occured');
     }
@@ -378,7 +408,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       .instance
                                                       .collection('Users')
                                                       .doc(Userr.sUid)
-                                                      .update({'image': ""});
+                                                      .update({
+                                                    'image': "",
+                                                    'network_image': ""
+                                                  });
 
                                                   updateUrl();
 
