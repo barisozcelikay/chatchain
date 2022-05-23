@@ -3,20 +3,17 @@
 import 'package:chatchain/Screens/aboutUs_page.dart';
 import 'package:chatchain/Screens/addFriend_page.dart';
 import 'package:chatchain/Screens/login_page.dart';
-import 'package:chatchain/Screens/messages_page.dart';
+
 import 'package:chatchain/Screens/profile_qr_page.dart';
 import 'package:chatchain/Screens/qrCodeScanner_page.dart';
 import 'package:chatchain/Screens/signup_page.dart';
-import 'package:chatchain/Screens/test.dart';
-import 'package:chatchain/Screens/test_page.dart';
-import 'package:chatchain/Screens/signup_page.dart';
+
 import 'package:chatchain/Screens/welcome_page.dart';
-import 'package:chatchain/Services/firebase_auth_service.dart';
+
 import 'package:chatchain/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Screens/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

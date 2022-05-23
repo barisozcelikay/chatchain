@@ -88,6 +88,11 @@ class _SignUpPageState extends State<SignUpPage> {
           .ref('Users/$uid')
           .child('$fileName')
           .putFile(file);
+
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(uid)
+          .update({'image': fileName});
     } on firebase_core.FirebaseException catch (e) {}
   }
 
@@ -680,10 +685,19 @@ class _SignUpPageState extends State<SignUpPage> {
                               'date_of_birth': dateOfBirth,
                               'image': fileName == null ? "" : fileName,
                               'email': email,
+                              'network_image': ""
                             });
 
                             uploadFile(path, fileName, currentUser.uid)
                                 .then((value) => print("Done"));
+
+                            Userr? user =
+                                await FirebaseAuthService().getUserData();
+
+                            await FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(currentUser.uid)
+                                .update({'network_image': user!.photoUrl});
 
                             setState(() {
                               Userr.sUid = currentUser.uid;

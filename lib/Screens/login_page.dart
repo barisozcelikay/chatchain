@@ -194,12 +194,21 @@ class _LoginPageState extends State<LoginPage> {
                                 Userr? user =
                                     await FirebaseAuthService().getUserData();
 
+                                print("Baris");
+
                                 Userr.sUid = user!.uid;
+                                print(user.photoUrl);
                                 Userr.sdate_of_birth = user.date_of_birth;
                                 Userr.semail = user.email;
                                 Userr.sname = user.name;
                                 Userr.sphotoUrl = user.photoUrl;
                                 Userr.ssurname = user.surname;
+
+                                await FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(user.uid)
+                                    .update({'network_image': user.photoUrl});
+
                                 var a = _fileFromImageUrl(user.photoUrl)
                                     as Future<File>;
 

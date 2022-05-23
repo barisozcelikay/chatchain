@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, file_names, use_key_in_widget_constructors, must_be_immutable
 
 import 'package:chatchain/constants.dart';
 import 'package:flutter/material.dart';

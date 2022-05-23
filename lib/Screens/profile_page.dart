@@ -230,6 +230,14 @@ class _ProfilePageState extends State<ProfilePage> {
           .collection('Users')
           .doc(Userr.sUid)
           .update({'image': fileName});
+
+      var a = getImageUrl(uid);
+
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(uid)
+          .update({'network_image': url});
+
       setState(() {
         Userr.sphotoUrl = fileName;
       });
