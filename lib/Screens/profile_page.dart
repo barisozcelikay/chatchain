@@ -197,6 +197,12 @@ class _ProfilePageState extends State<ProfilePage> {
         uid = user.uid;
         photo_url = user.photoUrl;
       });
+
+      Userr.sdate_of_birth = date_of_birth;
+      Userr.semail = email;
+      Userr.sname = name;
+      Userr.sphotoUrl = photo_url;
+      Userr.ssurname = surname;
       // Signinden sonra bilgiler gelmiyor
     }
     if (Userr.sphotoUrl != photo_url) {
@@ -531,7 +537,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(Userr.sname)
+                                  Text(Userr.sname != null ? Userr.sname : name)
                                 ],
                               ),
                             ),
@@ -544,7 +550,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(Userr.ssurname)
+                                  Text(surname)
                                 ],
                               ),
                             ),
@@ -557,7 +563,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(Userr.semail)
+                                  Text(email)
                                 ],
                               ),
                             ),
@@ -570,7 +576,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(Userr.sdate_of_birth)
+                                  Text(date_of_birth)
                                 ],
                               ),
                             )
