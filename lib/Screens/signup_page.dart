@@ -78,7 +78,6 @@ class _SignUpPageState extends State<SignUpPage> {
       print("ERROR");
     }
   }
-  //123452022
 
   Future uploadFile(String filePath, String fileName, String uid) async {
     File file = File(filePath);
@@ -927,7 +926,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     onStepCancel: () {
                       final firstStep = currentStep == 0;
                       if (firstStep) {
-                        // dont cancel
                       } else {
                         if (currentStep == 3) {
                           setState(() {

@@ -22,7 +22,6 @@ class FirebaseAuthService {
         photoUrl: user.photoURL.toString());
   }
 
-//?
   Stream<Userr?>? get user {
     return _firebaseAuth.authStateChanges().map(_userFromFirebase);
   }
